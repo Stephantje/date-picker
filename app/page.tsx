@@ -263,7 +263,7 @@ function ConfirmModal({
           <button onClick={onBack} style={{ background: "none", border: "2px solid #f3f4f6", borderRadius: "50px", padding: "0.75rem 1.5rem", cursor: "pointer", color: "var(--warm-gray)", fontFamily: "inherit" }}>
             ← Terug
           </button>
-          <button className="btn-primary" onClick={onConfirm} disabled={loading} onchange="Email();">
+          <button className="btn-primary" onClick={onConfirm;Email();} disabled={loading}>
             {loading ? "Opslaan... 💾" : "Het is een date! 💖"}
           </button>
         </div>
