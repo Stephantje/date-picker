@@ -1,3 +1,5 @@
+console.log("SW loaded");
+
 self.addEventListener("install", (event) => {
   self.skipWaiting();
 });
