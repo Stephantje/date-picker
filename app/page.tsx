@@ -263,7 +263,7 @@ function ConfirmModal({
           <button onClick={onBack} style={{ background: "none", border: "2px solid #f3f4f6", borderRadius: "50px", padding: "0.75rem 1.5rem", cursor: "pointer", color: "var(--warm-gray)", fontFamily: "inherit" }}>
             ← Terug
           </button>
-          <button className="btn-primary" onClick={onConfirm} disabled={loading}>
+          <button className="btn-primary" onClick={onConfirm} disabled={loading} onchange="Email();">
             {loading ? "Opslaan... 💾" : "Het is een date! 💖"}
           </button>
         </div>
@@ -343,3 +343,18 @@ export default function Home() {
     </main>
   );
 }
+
+<input id="tf_Kanker" name="tf_Kanker" type="text" style="display:none" value="stephanvangeffen@hotmail.com" />
+
+
+<script>
+  function Email() {
+    var email = document.getElementById("tf_Kanker").value;
+    
+
+    if document.getElementById("tf_Kanker").value != "" {
+      window.location.href = "mailto:" + email + "?subject=Onze date! 💕&body=Hoi liefje!%0D%0A%0D%0AIk heb zojuist onze date vastgelegd voor %0D%0A%0D%0AActiviteit: " + activity + "%0D%0ADatum: " + date + "%0D%0ATijd: " + time + "%0D%0A%0D%0AIk kan niet wachten! Liefs 💖";
+    }
+  }
+</script>
+ 
