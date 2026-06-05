@@ -1,22 +1,30 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import SWRegister from "./sw-register";
 
 export const metadata: Metadata = {
   title: "Wil je op date met mij? 💕",
-  description: "Een speciaal uitnodiging speciaal voor jou",
+  description: "Een speciale uitnodiging speciaal voor jou",
+  manifest: "/manifest.json",
+  themeColor: "#f43f5e",
+  appleWebApp: {
+    capable: true,
+    title: "Date? 💕",
+    statusBarStyle: "default",
+  },
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="nl">
-      <head>
-        <link rel="manifest" href="/manifest.json" />
-        <meta name="theme-color" content="#f43f5e" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="Date? 💕" />
-      </head>
-      <body>{children}</body>
+      <body>
+        <SWRegister />
+        {children}
+      </body>
     </html>
   );
 }
