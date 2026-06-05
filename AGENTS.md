@@ -1,5 +1,13 @@
-<!-- BEGIN:nextjs-agent-rules -->
-# This is NOT the Next.js you know
-
-This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing any code. Heed deprecation notices.
-<!-- END:nextjs-agent-rules -->
+{
+  "name": "Wil je op date met mij? 💕",
+  "short_name": "Date? 💕",
+  "description": "Een speciaal uitnodiging",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fffbf5",
+  "theme_color": "#f43f5e",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
