@@ -195,9 +195,6 @@ function DateTimeStep({ onNext }: { onNext: (date: string, time: string) => void
         </div>
       </div>
 
-      <div style={{ background: "var(--rose-pale)", borderRadius: "14px", padding: "1rem", marginBottom: "2rem", fontSize: "0.9rem", color: "var(--warm-gray)" }}>
-      </div>
-
       <div style={{ textAlign: "center" }}>
         <button
           className="btn-primary"
