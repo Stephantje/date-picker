@@ -2,14 +2,30 @@
 import { useState, useRef, useEffect } from "react";
 
 const ACTIVITIES = [
-  { id: "dinner", emoji: "🍝", label: "Dineren", desc: "Gezellig restaurantje" },
-  { id: "picnic", emoji: "🧺", label: "Picknick", desc: "Kleedje + lekker eten" },
-  { id: "movie", emoji: "🎬", label: "Filmavond", desc: "Popcorn & knuffelen" },
-  { id: "walk", emoji: "🌸", label: "Zonsondergang wandeling", desc: "Gouden uurtje samen" },
-  { id: "cooking", emoji: "👨‍🍳", label: "Samen koken", desc: "Iets lekkers maken" },
-  { id: "bowling", emoji: "🎳", label: "Bowlen", desc: "Vriendelijke competitie" },
-  { id: "coffee", emoji: "☕", label: "Koffie & Taart", desc: "Ontspannen middagje" },
-  { id: "museum", emoji: "🎨", label: "Museum bezoek", desc: "Kunst & cultuur dag" },
+  { id: "dinner", emoji: "🍝", label: "Uit eten", desc: "" },
+  { id: "coffee", emoji: "☕", label: "Koffie", desc: "" },
+  { id: "drinks", emoji: "🍹", label: "Drankjes", desc: "" },
+  { id: "walk", emoji: "🌸", label: "Wandelen", desc: "" },
+  { id: "movie", emoji: "🎬", label: "Filmavond", desc: "" },
+  { id: "bowling", emoji: "🎳", label: "Bowlen", desc: "" },
+  { id: "museum", emoji: "🖼️", label: "Museum", desc: "" },
+  { id: "gallery", emoji: "🎨", label: "Kunstgalerie", desc: "" },
+  { id: "theater", emoji: "🎭", label: "Theater", desc: "" },
+  { id: "concert", emoji: "🎶", label: "Concert", desc: "" },
+  { id: "cinema_special", emoji: "🍿", label: "Speciale bioscoop", desc: "" },
+  { id: "zoo", emoji: "🦁", label: "Dierentuin", desc: "" },
+  { id: "aquarium", emoji: "🐠", label: "Aquarium", desc: "" },
+  { id: "amusement_park", emoji: "🎢", label: "Pretpark", desc: "" },
+  { id: "escape_room", emoji: "🧩", label: "Escape room", desc: "" },
+  { id: "mini_golf", emoji: "⛳", label: "Mini golf", desc: "" },
+  { id: "arcade", emoji: "🕹️", label: "Arcade", desc: "" },
+  { id: "cooking", emoji: "👨‍🍳", label: "Samen koken", desc: "" },
+  { id: "baking", emoji: "🍪", label: "Bakken", desc: "" },
+  { id: "brunch", emoji: "🥞", label: "Brunch", desc: "" },
+  { id: "ice_cream", emoji: "🍦", label: "IJs eten", desc: "" },
+  { id: "shopping", emoji: "🛍️", label: "Shoppen", desc: "" },
+  { id: "market", emoji: "🧺", label: "Markt bezoeken", desc: "" },
+  { id: "home_chill", emoji: "🏠", label: "Thuis chillen", desc: "" },
 ];
 
 function Petals({ active }: { active: boolean }) {
