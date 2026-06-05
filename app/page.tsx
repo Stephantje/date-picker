@@ -2,14 +2,14 @@
 import { useState, useRef, useEffect } from "react";
 
 const ACTIVITIES = [
-  { id: "dinner", emoji: "🍝", label: "Dinner Date", desc: "Cozy restaurant vibes" },
-  { id: "picnic", emoji: "🧺", label: "Picnic", desc: "Blanket + good snacks" },
-  { id: "movie", emoji: "🎬", label: "Movie Night", desc: "Popcorn & cuddles" },
-  { id: "walk", emoji: "🌸", label: "Sunset Walk", desc: "Golden hour strolls" },
-  { id: "cooking", emoji: "👨‍🍳", label: "Cook Together", desc: "Make something yummy" },
-  { id: "bowling", emoji: "🎳", label: "Bowling", desc: "Friendly competition" },
-  { id: "coffee", emoji: "☕", label: "Coffee & Cake", desc: "Chill café afternoon" },
-  { id: "museum", emoji: "🎨", label: "Museum Visit", desc: "Art & culture day" },
+  { id: "dinner", emoji: "🍝", label: "Dineren", desc: "Gezellig restaurantje" },
+  { id: "picnic", emoji: "🧺", label: "Picknick", desc: "Kleedje + lekker eten" },
+  { id: "movie", emoji: "🎬", label: "Filmavond", desc: "Popcorn & knuffelen" },
+  { id: "walk", emoji: "🌸", label: "Zonsondergang wandeling", desc: "Gouden uurtje samen" },
+  { id: "cooking", emoji: "👨‍🍳", label: "Samen koken", desc: "Iets lekkers maken" },
+  { id: "bowling", emoji: "🎳", label: "Bowlen", desc: "Vriendelijke competitie" },
+  { id: "coffee", emoji: "☕", label: "Koffie & Taart", desc: "Ontspannen middagje" },
+  { id: "museum", emoji: "🎨", label: "Museum bezoek", desc: "Kunst & cultuur dag" },
 ];
 
 function Petals({ active }: { active: boolean }) {
@@ -54,7 +54,6 @@ function FloatingDecorations() {
       <div className="float-b absolute bottom-20 right-8 text-4xl opacity-15" style={{ animationDelay: "1s" }}>🌹</div>
       <div className="float-a absolute top-1/2 left-4 text-2xl opacity-10" style={{ animationDelay: "3s" }}>💗</div>
       <div className="float-b absolute top-1/3 right-4 text-2xl opacity-10" style={{ animationDelay: "0.5s" }}>🌺</div>
-      {/* Background blobs */}
       <div style={{ position: "absolute", top: "-10%", right: "-5%", width: "400px", height: "400px", borderRadius: "50%", background: "radial-gradient(circle, rgba(244,63,94,0.07) 0%, transparent 70%)" }} />
       <div style={{ position: "absolute", bottom: "-10%", left: "-5%", width: "350px", height: "350px", borderRadius: "50%", background: "radial-gradient(circle, rgba(251,113,133,0.07) 0%, transparent 70%)" }} />
     </div>
@@ -71,16 +70,13 @@ function ProgressDots({ step }: { step: number }) {
   );
 }
 
-// Step 0: Ask the question
 function AskStep({ onYes }: { onYes: () => void }) {
   const noRef = useRef<HTMLButtonElement>(null);
 
   function moveNo(e: React.MouseEvent) {
     const btn = noRef.current;
     if (!btn) return;
-    const rect = btn.getBoundingClientRect();
     const bw = window.innerWidth, bh = window.innerHeight;
-    // Pick a random spot far from current mouse
     let nx: number, ny: number;
     do {
       nx = Math.random() * (bw - 120);
@@ -96,16 +92,16 @@ function AskStep({ onYes }: { onYes: () => void }) {
     <div className="step-card" style={{ textAlign: "center" }}>
       <div className="heartbeat" style={{ fontSize: "5rem", marginBottom: "1.5rem" }}>💝</div>
       <h1 className="font-display" style={{ fontSize: "2.2rem", color: "var(--charcoal)", lineHeight: 1.2, marginBottom: "0.75rem" }}>
-        Hey, beautiful 💕
+        Hey, schatje 💕
       </h1>
       <p style={{ color: "var(--warm-gray)", fontSize: "1.1rem", marginBottom: "2.5rem", lineHeight: 1.6 }}>
-        I have a very important question to ask you...
+        Ik heb een hele belangrijke vraag voor je...
         <br />
-        <em className="font-display" style={{ color: "var(--rose)", fontSize: "1.3rem" }}>Will you go on a date with me?</em>
+        <em className="font-display" style={{ color: "var(--rose)", fontSize: "1.3rem" }}>Wil je op date met mij?</em>
       </p>
       <div style={{ display: "flex", gap: "1rem", justifyContent: "center", alignItems: "center", flexWrap: "wrap" }}>
         <button className="btn-primary" onClick={onYes} style={{ fontSize: "1.1rem", padding: "1rem 3rem" }}>
-          Yes, of course! 🥰
+          Ja, natuurlijk! 🥰
         </button>
         <button
           ref={noRef}
@@ -113,17 +109,16 @@ function AskStep({ onYes }: { onYes: () => void }) {
           onMouseEnter={moveNo}
           onClick={moveNo}
         >
-          No... 😢
+          Nee... 😢
         </button>
       </div>
       <p style={{ marginTop: "1.5rem", fontSize: "0.85rem", color: "#d1d5db" }}>
-        (psst — there's only one right answer 😉)
+        (psst — er is maar één goed antwoord 😉)
       </p>
     </div>
   );
 }
 
-// Step 1: Pick activity
 function ActivityStep({ onNext }: { onNext: (activity: string) => void }) {
   const [selected, setSelected] = useState<string>("");
 
@@ -133,9 +128,9 @@ function ActivityStep({ onNext }: { onNext: (activity: string) => void }) {
       <div style={{ textAlign: "center", marginBottom: "2rem" }}>
         <div style={{ fontSize: "2.5rem", marginBottom: "0.5rem" }}>🗺️</div>
         <h2 className="font-display" style={{ fontSize: "1.8rem", marginBottom: "0.4rem" }}>
-          What shall we do?
+          Wat gaan we doen?
         </h2>
-        <p style={{ color: "var(--warm-gray)", fontSize: "0.95rem" }}>Pick something fun for us 💫</p>
+        <p style={{ color: "var(--warm-gray)", fontSize: "0.95rem" }}>Kies iets leuks voor ons 💫</p>
       </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem", marginBottom: "2rem" }}>
@@ -158,14 +153,13 @@ function ActivityStep({ onNext }: { onNext: (activity: string) => void }) {
           onClick={() => selected && onNext(selected)}
           style={{ opacity: selected ? 1 : 0.4, cursor: selected ? "pointer" : "not-allowed" }}
         >
-          Next step ✨
+          Volgende stap ✨
         </button>
       </div>
     </div>
   );
 }
 
-// Step 2: Pick date & time
 function DateTimeStep({ onNext }: { onNext: (date: string, time: string) => void }) {
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
@@ -177,15 +171,15 @@ function DateTimeStep({ onNext }: { onNext: (date: string, time: string) => void
       <div style={{ textAlign: "center", marginBottom: "2rem" }}>
         <div style={{ fontSize: "2.5rem", marginBottom: "0.5rem" }}>📅</div>
         <h2 className="font-display" style={{ fontSize: "1.8rem", marginBottom: "0.4rem" }}>
-          When's our date?
+          Wanneer is onze date?
         </h2>
-        <p style={{ color: "var(--warm-gray)", fontSize: "0.95rem" }}>Pick a date & time that works for you 🌙</p>
+        <p style={{ color: "var(--warm-gray)", fontSize: "0.95rem" }}>Kies een datum & tijd die jou uitkomt 🌙</p>
       </div>
 
       <div style={{ display: "flex", flexDirection: "column", gap: "1.2rem", marginBottom: "2rem" }}>
         <div>
           <label style={{ display: "block", fontWeight: 500, marginBottom: "0.5rem", fontSize: "0.9rem", color: "var(--warm-gray)" }}>
-            📆 Choose a date
+            📆 Kies een datum
           </label>
           <input
             type="date"
@@ -197,7 +191,7 @@ function DateTimeStep({ onNext }: { onNext: (date: string, time: string) => void
         </div>
         <div>
           <label style={{ display: "block", fontWeight: 500, marginBottom: "0.5rem", fontSize: "0.9rem", color: "var(--warm-gray)" }}>
-            ⏰ Choose a time
+            ⏰ Kies een tijd
           </label>
           <input
             type="time"
@@ -209,7 +203,7 @@ function DateTimeStep({ onNext }: { onNext: (date: string, time: string) => void
       </div>
 
       <div style={{ background: "var(--rose-pale)", borderRadius: "14px", padding: "1rem", marginBottom: "2rem", fontSize: "0.9rem", color: "var(--warm-gray)" }}>
-        💡 <em>I'll make sure this evening is absolutely perfect for you</em>
+        💡 <em>Ik zorg ervoor dat deze avond absoluut perfect wordt voor jou</em>
       </div>
 
       <div style={{ textAlign: "center" }}>
@@ -218,32 +212,31 @@ function DateTimeStep({ onNext }: { onNext: (date: string, time: string) => void
           onClick={() => date && time && onNext(date, time)}
           style={{ opacity: date && time ? 1 : 0.4, cursor: date && time ? "pointer" : "not-allowed" }}
         >
-          Almost there 💕
+          Bijna klaar 💕
         </button>
       </div>
     </div>
   );
 }
 
-// Step 3: Confirmation modal
 function ConfirmModal({
   activity, date, time, onConfirm, onBack, loading
 }: {
   activity: string; date: string; time: string; onConfirm: () => void; onBack: () => void; loading: boolean;
 }) {
   const act = ACTIVITIES.find((a) => a.id === activity)!;
-  const dateStr = new Date(date + "T12:00:00").toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" });
-  const timeStr = new Date(`2000-01-01T${time}`).toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" });
+  const dateStr = new Date(date + "T12:00:00").toLocaleDateString("nl-NL", { weekday: "long", month: "long", day: "numeric", year: "numeric" });
+  const timeStr = new Date(`2000-01-01T${time}`).toLocaleTimeString("nl-NL", { hour: "2-digit", minute: "2-digit" });
 
   return (
     <div className="modal-overlay">
       <div className="modal-card">
         <div style={{ fontSize: "3.5rem", marginBottom: "1rem" }}>🎉</div>
         <h2 className="font-display" style={{ fontSize: "1.9rem", marginBottom: "0.5rem", color: "var(--charcoal)" }}>
-          Our Date Plan!
+          Ons dateplan!
         </h2>
         <p style={{ color: "var(--warm-gray)", marginBottom: "2rem", fontSize: "0.95rem" }}>
-          Here's what we're doing, just to confirm:
+          Dit is wat we gaan doen, even bevestigen:
         </p>
 
         <div style={{ background: "var(--rose-pale)", borderRadius: "18px", padding: "1.5rem", marginBottom: "2rem", textAlign: "left" }}>
@@ -256,11 +249,11 @@ function ConfirmModal({
           </div>
           <div style={{ display: "flex", gap: "1.5rem" }}>
             <div>
-              <div style={{ fontSize: "0.78rem", color: "var(--warm-gray)", marginBottom: "0.2rem" }}>DATE</div>
+              <div style={{ fontSize: "0.78rem", color: "var(--warm-gray)", marginBottom: "0.2rem" }}>DATUM</div>
               <div style={{ fontWeight: 500, fontSize: "0.95rem" }}>📅 {dateStr}</div>
             </div>
             <div>
-              <div style={{ fontSize: "0.78rem", color: "var(--warm-gray)", marginBottom: "0.2rem" }}>TIME</div>
+              <div style={{ fontSize: "0.78rem", color: "var(--warm-gray)", marginBottom: "0.2rem" }}>TIJD</div>
               <div style={{ fontWeight: 500, fontSize: "0.95rem" }}>⏰ {timeStr}</div>
             </div>
           </div>
@@ -268,10 +261,10 @@ function ConfirmModal({
 
         <div style={{ display: "flex", gap: "0.75rem", justifyContent: "center" }}>
           <button onClick={onBack} style={{ background: "none", border: "2px solid #f3f4f6", borderRadius: "50px", padding: "0.75rem 1.5rem", cursor: "pointer", color: "var(--warm-gray)", fontFamily: "inherit" }}>
-            ← Go back
+            ← Terug
           </button>
           <button className="btn-primary" onClick={onConfirm} disabled={loading}>
-            {loading ? "Saving... 💾" : "It's a date! 💖"}
+            {loading ? "Opslaan... 💾" : "Het is een date! 💖"}
           </button>
         </div>
       </div>
@@ -279,21 +272,20 @@ function ConfirmModal({
   );
 }
 
-// Step 4: Success
 function SuccessStep() {
   return (
     <div className="step-card" style={{ textAlign: "center" }}>
       <div style={{ fontSize: "5rem", marginBottom: "1rem" }}>🥰</div>
       <h2 className="font-display" style={{ fontSize: "2.2rem", marginBottom: "0.75rem", color: "var(--rose)" }}>
-        It's a date!
+        Het is een date!
       </h2>
       <p style={{ color: "var(--warm-gray)", fontSize: "1.05rem", lineHeight: 1.7, marginBottom: "2rem" }}>
-        I can't wait! I'll make sure everything is
+        Ik kan niet wachten! Ik zorg ervoor dat alles
         <br />
-        <strong className="font-display" style={{ color: "var(--charcoal)", fontSize: "1.15rem" }}>absolutely perfect for you 💕</strong>
+        <strong className="font-display" style={{ color: "var(--charcoal)", fontSize: "1.15rem" }}>absoluut perfect wordt voor jou 💕</strong>
       </p>
       <div style={{ background: "var(--rose-pale)", borderRadius: "16px", padding: "1.2rem", fontSize: "0.95rem", color: "var(--warm-gray)" }}>
-        ✅ Your date has been saved! I'll be counting down the days... 🗓️
+        ✅ Jouw date is opgeslagen! Ik tel de dagen af... 🗓️
       </div>
     </div>
   );
