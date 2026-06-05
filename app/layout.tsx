@@ -3,7 +3,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Wil je op date met mij? 💕",
-  description: "Een speciaal uitnodiging speciaal voor jou",
+  description: "Een speciale uitnodiging voor jou",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
