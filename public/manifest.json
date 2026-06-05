@@ -1,12 +1,10 @@
 {
   "name": "Wil je op date met mij? 💕",
-  "short_name": "Date? 💕",
-  "description": "Een speciale uitnodiging",
+  "short_name": "Date 💕",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#fffbf5",
+  "background_color": "#ffffff",
   "theme_color": "#f43f5e",
-  "orientation": "portrait",
   "icons": [
     {
       "src": "/icon-192.png",

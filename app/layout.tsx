@@ -4,14 +4,9 @@ import SWRegister from "./sw-register";
 
 export const metadata: Metadata = {
   title: "Wil je op date met mij? 💕",
-  description: "Een speciale uitnodiging speciaal voor jou",
+  description: "Een speciale uitnodiging",
   manifest: "/manifest.json",
-  themeColor: "#f43f5e",
-  appleWebApp: {
-    capable: true,
-    title: "Date? 💕",
-    statusBarStyle: "default",
-  },
+  themeColor: "#f43f5e"
 };
 
 export default function RootLayout({
