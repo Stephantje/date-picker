@@ -92,11 +92,9 @@ function AskStep({ onYes }: { onYes: () => void }) {
     <div className="step-card" style={{ textAlign: "center" }}>
       <div className="heartbeat" style={{ fontSize: "5rem", marginBottom: "1.5rem" }}>💝</div>
       <h1 className="font-display" style={{ fontSize: "2.2rem", color: "var(--charcoal)", lineHeight: 1.2, marginBottom: "0.75rem" }}>
-        Hey, schatje 💕
+        Hey hey 💕
       </h1>
       <p style={{ color: "var(--warm-gray)", fontSize: "1.1rem", marginBottom: "2.5rem", lineHeight: 1.6 }}>
-        Ik heb een hele belangrijke vraag voor je...
-        <br />
         <em className="font-display" style={{ color: "var(--rose)", fontSize: "1.3rem" }}>Wil je op date met mij?</em>
       </p>
       <div style={{ display: "flex", gap: "1rem", justifyContent: "center", alignItems: "center", flexWrap: "wrap" }}>
@@ -112,9 +110,6 @@ function AskStep({ onYes }: { onYes: () => void }) {
           Nee... 😢
         </button>
       </div>
-      <p style={{ marginTop: "1.5rem", fontSize: "0.85rem", color: "#d1d5db" }}>
-        (psst — er is maar één goed antwoord 😉)
-      </p>
     </div>
   );
 }
@@ -130,7 +125,6 @@ function ActivityStep({ onNext }: { onNext: (activity: string) => void }) {
         <h2 className="font-display" style={{ fontSize: "1.8rem", marginBottom: "0.4rem" }}>
           Wat gaan we doen?
         </h2>
-        <p style={{ color: "var(--warm-gray)", fontSize: "0.95rem" }}>Kies iets leuks voor ons 💫</p>
       </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem", marginBottom: "2rem" }}>
@@ -201,11 +195,6 @@ function DateTimeStep({ onNext }: { onNext: (date: string, time: string) => void
           />
         </div>
       </div>
-
-      <div style={{ background: "var(--rose-pale)", borderRadius: "14px", padding: "1rem", marginBottom: "2rem", fontSize: "0.9rem", color: "var(--warm-gray)" }}>
-        💡 <em>Ik zorg ervoor dat deze avond absoluut perfect wordt voor jou</em>
-      </div>
-
       <div style={{ textAlign: "center" }}>
         <button
           className="btn-primary"
@@ -235,10 +224,6 @@ function ConfirmModal({
         <h2 className="font-display" style={{ fontSize: "1.9rem", marginBottom: "0.5rem", color: "var(--charcoal)" }}>
           Ons dateplan!
         </h2>
-        <p style={{ color: "var(--warm-gray)", marginBottom: "2rem", fontSize: "0.95rem" }}>
-          Dit is wat we gaan doen, even bevestigen:
-        </p>
-
         <div style={{ background: "var(--rose-pale)", borderRadius: "18px", padding: "1.5rem", marginBottom: "2rem", textAlign: "left" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "1rem" }}>
             <span style={{ fontSize: "2rem" }}>{act.emoji}</span>
@@ -285,7 +270,7 @@ function SuccessStep() {
         <strong className="font-display" style={{ color: "var(--charcoal)", fontSize: "1.15rem" }}>absoluut perfect wordt voor jou 💕</strong>
       </p>
       <div style={{ background: "var(--rose-pale)", borderRadius: "16px", padding: "1.2rem", fontSize: "0.95rem", color: "var(--warm-gray)" }}>
-        ✅ Jouw date is opgeslagen! Ik tel de dagen af... 🗓️
+        ✅ Onze date is opgeslagen! Ik tel de dagen af... 🗓️
       </div>
     </div>
   );
