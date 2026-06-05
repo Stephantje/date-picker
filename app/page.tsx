@@ -91,9 +91,6 @@ function AskStep({ onYes }: { onYes: () => void }) {
   return (
     <div className="step-card" style={{ textAlign: "center" }}>
       <div className="heartbeat" style={{ fontSize: "5rem", marginBottom: "1.5rem" }}>💝</div>
-      <h1 className="font-display" style={{ fontSize: "2.2rem", color: "var(--charcoal)", lineHeight: 1.2, marginBottom: "0.75rem" }}>
-        Hey, schatje 💕
-      </h1>
       <p style={{ color: "var(--warm-gray)", fontSize: "1.1rem", marginBottom: "2.5rem", lineHeight: 1.6 }}>
         Ik heb een hele belangrijke vraag voor je...
         <br />
@@ -112,9 +109,6 @@ function AskStep({ onYes }: { onYes: () => void }) {
           Nee... 😢
         </button>
       </div>
-      <p style={{ marginTop: "1.5rem", fontSize: "0.85rem", color: "#d1d5db" }}>
-        (psst — er is maar één goed antwoord 😉)
-      </p>
     </div>
   );
 }
@@ -130,7 +124,6 @@ function ActivityStep({ onNext }: { onNext: (activity: string) => void }) {
         <h2 className="font-display" style={{ fontSize: "1.8rem", marginBottom: "0.4rem" }}>
           Wat gaan we doen?
         </h2>
-        <p style={{ color: "var(--warm-gray)", fontSize: "0.95rem" }}>Kies iets leuks voor ons 💫</p>
       </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem", marginBottom: "2rem" }}>
@@ -203,7 +196,6 @@ function DateTimeStep({ onNext }: { onNext: (date: string, time: string) => void
       </div>
 
       <div style={{ background: "var(--rose-pale)", borderRadius: "14px", padding: "1rem", marginBottom: "2rem", fontSize: "0.9rem", color: "var(--warm-gray)" }}>
-        💡 <em>Ik zorg ervoor dat deze avond absoluut perfect wordt voor jou</em>
       </div>
 
       <div style={{ textAlign: "center" }}>
