@@ -167,7 +167,6 @@ function DateTimeStep({ onNext }: { onNext: (date: string, time: string) => void
         <h2 className="font-display" style={{ fontSize: "1.8rem", marginBottom: "0.4rem" }}>
           Wanneer is onze date?
         </h2>
-        <p style={{ color: "var(--warm-gray)", fontSize: "0.95rem" }}>Kies een datum & tijd die jou uitkomt 🌙</p>
       </div>
 
       <div style={{ display: "flex", flexDirection: "column", gap: "1.2rem", marginBottom: "2rem" }}>
