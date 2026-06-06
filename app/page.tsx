@@ -3,15 +3,11 @@ import { useState, useRef, useEffect } from "react";
 
 const ACTIVITIES = [
   { id: "dinner",   emoji: "🍝", label: "Uit eten" },
-  { id: "coffee",   emoji: "☕", label: "Koffie" },
   { id: "drinks",   emoji: "🍹", label: "Drankjes" },
   { id: "walk",     emoji: "🌸", label: "Wandelen" },
   { id: "movie",    emoji: "🎬", label: "Filmavond" },
   { id: "bowling",  emoji: "🎳", label: "Bowlen" },
   { id: "museum",   emoji: "🖼️", label: "Museum" },
-  { id: "gallery",  emoji: "🎨", label: "Kunstgalerie" },
-  { id: "theater",  emoji: "🎭", label: "Theater" },
-  { id: "concert",  emoji: "🎶", label: "Concert" },
   { id: "cinema",   emoji: "🍿", label: "Bioscoop" },
   { id: "zoo",      emoji: "🦁", label: "Dierentuin" },
   { id: "aquarium", emoji: "🐠", label: "Aquarium" },
@@ -19,12 +15,7 @@ const ACTIVITIES = [
   { id: "escape",   emoji: "🧩", label: "Escape room" },
   { id: "golf",     emoji: "⛳", label: "Mini golf" },
   { id: "arcade",   emoji: "🕹️", label: "Arcade" },
-  { id: "cooking",  emoji: "👨‍🍳", label: "Samen koken" },
-  { id: "baking",   emoji: "🍪", label: "Bakken" },
-  { id: "brunch",   emoji: "🥞", label: "Brunch" },
-  { id: "icecream", emoji: "🍦", label: "IJs eten" },
   { id: "shopping", emoji: "🛍️", label: "Shoppen" },
-  { id: "market",   emoji: "🧺", label: "Markt" },
   { id: "chill",    emoji: "🏠", label: "Thuis chillen" },
 ];
 
@@ -386,7 +377,7 @@ function SuccessStep({ activity, date, time }: { activity: string; date: string;
         Het is een date!
       </h2>
       <p style={{ color: "var(--muted)", fontSize: "0.95rem", lineHeight: 1.6, marginBottom: "1.5rem" }}>
-        Ik kan niet wachten! Ik zorg ervoor dat alles perfect wordt 💕
+        Ik zorg ervoor dat alles perfect wordt 💕
       </p>
 
       {/* summary */}
