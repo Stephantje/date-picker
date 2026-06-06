@@ -3,7 +3,6 @@ import { useState, useRef, useEffect } from "react";
 
 const ACTIVITIES = [
   { id: "dinner",   emoji: "🍝", label: "Uit eten" },
-  { id: "coffee",   emoji: "☕", label: "Koffie" },
   { id: "drinks",   emoji: "🍹", label: "Drankjes" },
   { id: "walk",     emoji: "🌸", label: "Wandelen" },
   { id: "movie",    emoji: "🎬", label: "Filmavond" },
@@ -17,7 +16,6 @@ const ACTIVITIES = [
   { id: "escape",   emoji: "🧩", label: "Escape room" },
   { id: "golf",     emoji: "⛳", label: "Mini golf" },
   { id: "arcade",   emoji: "🕹️", label: "Arcade" },
-  { id: "brunch",   emoji: "🥞", label: "Brunch" },
   { id: "shopping", emoji: "🛍️", label: "Shoppen" },
 ];
 
