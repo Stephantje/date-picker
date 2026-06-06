@@ -8,10 +8,8 @@ const ACTIVITIES = [
   { id: "walk",     emoji: "🌸", label: "Wandelen" },
   { id: "movie",    emoji: "🎬", label: "Filmavond" },
   { id: "bowling",  emoji: "🎳", label: "Bowlen" },
-  { id: "museum",   emoji: "🖼️", label: "Museum" },
   { id: "gallery",  emoji: "🎨", label: "Kunstgalerie" },
   { id: "theater",  emoji: "🎭", label: "Theater" },
-  { id: "concert",  emoji: "🎶", label: "Concert" },
   { id: "cinema",   emoji: "🍿", label: "Bioscoop" },
   { id: "zoo",      emoji: "🦁", label: "Dierentuin" },
   { id: "aquarium", emoji: "🐠", label: "Aquarium" },
@@ -19,13 +17,8 @@ const ACTIVITIES = [
   { id: "escape",   emoji: "🧩", label: "Escape room" },
   { id: "golf",     emoji: "⛳", label: "Mini golf" },
   { id: "arcade",   emoji: "🕹️", label: "Arcade" },
-  { id: "cooking",  emoji: "👨‍🍳", label: "Samen koken" },
-  { id: "baking",   emoji: "🍪", label: "Bakken" },
   { id: "brunch",   emoji: "🥞", label: "Brunch" },
-  { id: "icecream", emoji: "🍦", label: "IJs eten" },
   { id: "shopping", emoji: "🛍️", label: "Shoppen" },
-  { id: "market",   emoji: "🧺", label: "Markt" },
-  { id: "chill",    emoji: "🏠", label: "Thuis chillen" },
 ];
 
 /* ── confetti ── */
