@@ -3,12 +3,15 @@ import { useState, useRef, useEffect } from "react";
 
 const ACTIVITIES = [
   { id: "dinner",   emoji: "🍝", label: "Uit eten" },
+  { id: "coffee",   emoji: "☕", label: "Koffie" },
   { id: "drinks",   emoji: "🍹", label: "Drankjes" },
   { id: "walk",     emoji: "🌸", label: "Wandelen" },
   { id: "movie",    emoji: "🎬", label: "Filmavond" },
   { id: "bowling",  emoji: "🎳", label: "Bowlen" },
+  { id: "museum",   emoji: "🖼️", label: "Museum" },
   { id: "gallery",  emoji: "🎨", label: "Kunstgalerie" },
   { id: "theater",  emoji: "🎭", label: "Theater" },
+  { id: "concert",  emoji: "🎶", label: "Concert" },
   { id: "cinema",   emoji: "🍿", label: "Bioscoop" },
   { id: "zoo",      emoji: "🦁", label: "Dierentuin" },
   { id: "aquarium", emoji: "🐠", label: "Aquarium" },
@@ -16,7 +19,13 @@ const ACTIVITIES = [
   { id: "escape",   emoji: "🧩", label: "Escape room" },
   { id: "golf",     emoji: "⛳", label: "Mini golf" },
   { id: "arcade",   emoji: "🕹️", label: "Arcade" },
+  { id: "cooking",  emoji: "👨‍🍳", label: "Samen koken" },
+  { id: "baking",   emoji: "🍪", label: "Bakken" },
+  { id: "brunch",   emoji: "🥞", label: "Brunch" },
+  { id: "icecream", emoji: "🍦", label: "IJs eten" },
   { id: "shopping", emoji: "🛍️", label: "Shoppen" },
+  { id: "market",   emoji: "🧺", label: "Markt" },
+  { id: "chill",    emoji: "🏠", label: "Thuis chillen" },
 ];
 
 /* ── confetti ── */
@@ -361,28 +370,93 @@ function ConfirmModal({ activity, date, time, onConfirm, onBack, loading }: {
 /* ─────────────────────────────────────────
    STEP 3 — Success
 ───────────────────────────────────────── */
-function SuccessStep() {
+function SuccessStep({ activity, date, time }: { activity: string; date: string; time: string }) {
+  const act = ACTIVITIES.find((a) => a.id === activity)!;
+  const dateStr = new Date(date + "T12:00:00").toLocaleDateString("nl-NL", {
+    weekday: "long", day: "numeric", month: "long", year: "numeric",
+  });
+  const timeStr = new Date(`2000-01-01T${time}`).toLocaleTimeString("nl-NL", {
+    hour: "2-digit", minute: "2-digit",
+  });
+
+  // Build .ics calendar file content
+  function addToCalendar() {
+    const [h, m]   = time.split(":").map(Number);
+    const startDt  = new Date(date + "T" + time);
+    const endDt    = new Date(startDt.getTime() + 2 * 60 * 60 * 1000); // +2 hours
+
+    function fmt(d: Date) {
+      return d.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
+    }
+
+    const ics = [
+      "BEGIN:VCALENDAR",
+      "VERSION:2.0",
+      "PRODID:-//DatePicker//NL",
+      "BEGIN:VEVENT",
+      `DTSTART:${fmt(startDt)}`,
+      `DTEND:${fmt(endDt)}`,
+      `SUMMARY:📅 Date — ${act.label}`,
+      `DESCRIPTION:Onze date: ${act.label}\\nDatum: ${dateStr}\\nTijd: ${timeStr}`,
+      "END:VEVENT",
+      "END:VCALENDAR",
+    ].join("\r\n");
+
+    const blob = new Blob([ics], { type: "text/calendar;charset=utf-8" });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement("a");
+    a.href     = url;
+    a.download = "onze-date.ics";
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
   return (
     <div className="step-card" style={{ textAlign: "center", position: "relative", zIndex: 1 }}>
       <div style={{ fontSize: "4.5rem", marginBottom: "1.25rem" }}>🥰</div>
-      <h2 className="font-display" style={{ fontSize: "2rem", color: "var(--pink)", marginBottom: "0.6rem" }}>
+      <h2 className="font-display" style={{ fontSize: "2rem", color: "var(--pink)", marginBottom: "0.5rem" }}>
         Het is een date!
       </h2>
-      <p style={{ color: "var(--muted)", fontSize: "1rem", lineHeight: 1.7, marginBottom: "2rem" }}>
-        Ik kan niet wachten! Ik zorg ervoor dat alles
-        <br />
-        <strong className="font-display" style={{ color: "var(--text)", fontSize: "1.1rem", fontStyle: "italic" }}>
-          absoluut perfect wordt voor jou 💕
-        </strong>
+      <p style={{ color: "var(--muted)", fontSize: "0.95rem", lineHeight: 1.6, marginBottom: "1.5rem" }}>
+        Ik kan niet wachten! Ik zorg ervoor dat alles perfect wordt 💕
       </p>
+
+      {/* summary */}
+      <div style={{ background: "#fff8f9", borderRadius: "16px", padding: "0.2rem 1rem", marginBottom: "1.25rem", border: "1.5px solid var(--border)", textAlign: "left" }}>
+        <div className="sum-row">
+          <span className="sum-ico">{act.emoji}</span>
+          <div>
+            <div className="sum-label">Activiteit</div>
+            <div className="sum-val">{act.label}</div>
+          </div>
+        </div>
+        <div className="sum-row">
+          <span className="sum-ico">📅</span>
+          <div>
+            <div className="sum-label">Datum</div>
+            <div className="sum-val" style={{ textTransform: "capitalize" }}>{dateStr}</div>
+          </div>
+        </div>
+        <div className="sum-row">
+          <span className="sum-ico">⏰</span>
+          <div>
+            <div className="sum-label">Tijd</div>
+            <div className="sum-val">{timeStr}</div>
+          </div>
+        </div>
+      </div>
+
+      {/* calendar button */}
+      <button className="btn-yes" style={{ width: "100%", borderRadius: "14px", marginBottom: "0.75rem" }} onClick={addToCalendar}>
+        📲 Zet in mijn agenda
+      </button>
+
       <div style={{
-        background: "#fff8f9", borderRadius: "14px",
-        padding: "1rem 1.25rem", fontSize: "0.9rem",
-        color: "var(--muted)", border: "1.5px solid var(--border)",
-        display: "flex", alignItems: "center", justifyContent: "center", gap: "0.5rem",
+        fontSize: "0.82rem", color: "var(--muted)", lineHeight: 1.5,
+        background: "#f9fafb", borderRadius: "12px", padding: "0.75rem 1rem",
+        border: "1px solid var(--border)",
       }}>
-        <span>✅</span>
-        <span>Onze date is opgeslagen — ik tel de dagen af 🗓️</span>
+        ✅ Opgeslagen in Supabase — tik hierboven om toe te voegen aan je agenda
       </div>
     </div>
   );
@@ -423,7 +497,7 @@ export default function Home() {
       {step === "ask"      && <AskStep onYes={() => setStep("activity")} />}
       {step === "activity" && <ActivityStep onNext={(a) => { setActivity(a); setStep("datetime"); }} />}
       {step === "datetime" && <DateTimeStep onNext={(d, t) => { setDate(d); setTime(t); setShowModal(true); }} />}
-      {step === "success"  && <SuccessStep />}
+      {step === "success"  && <SuccessStep activity={activity} date={date} time={time} />}
 
       {showModal && (
         <ConfirmModal
