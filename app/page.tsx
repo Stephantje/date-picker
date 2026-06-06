@@ -2,46 +2,51 @@
 import { useState, useRef, useEffect } from "react";
 
 const ACTIVITIES = [
-  { id: "dinner", emoji: "🍝", label: "Uit eten" },
-  { id: "coffee", emoji: "☕", label: "Koffie" },
-  { id: "drinks", emoji: "🍹", label: "Drankjes" },
-  { id: "walk", emoji: "🌿", label: "Wandelen" },
-  { id: "movie", emoji: "🎬", label: "Filmavond" },
-  { id: "bowling", emoji: "🎳", label: "Bowlen" },
-  { id: "museum", emoji: "🖼️", label: "Museum" },
-  { id: "gallery", emoji: "🎨", label: "Kunstgalerie" },
-  { id: "theater", emoji: "🎭", label: "Theater" },
-  { id: "concert", emoji: "🎶", label: "Concert" },
-  { id: "cinema", emoji: "🍿", label: "Bioscoop" },
-  { id: "zoo", emoji: "🦁", label: "Dierentuin" },
+  { id: "dinner",   emoji: "🍝", label: "Uit eten" },
+  { id: "coffee",   emoji: "☕", label: "Koffie" },
+  { id: "drinks",   emoji: "🍹", label: "Drankjes" },
+  { id: "walk",     emoji: "🌸", label: "Wandelen" },
+  { id: "movie",    emoji: "🎬", label: "Filmavond" },
+  { id: "bowling",  emoji: "🎳", label: "Bowlen" },
+  { id: "museum",   emoji: "🖼️", label: "Museum" },
+  { id: "gallery",  emoji: "🎨", label: "Kunstgalerie" },
+  { id: "theater",  emoji: "🎭", label: "Theater" },
+  { id: "concert",  emoji: "🎶", label: "Concert" },
+  { id: "cinema",   emoji: "🍿", label: "Bioscoop" },
+  { id: "zoo",      emoji: "🦁", label: "Dierentuin" },
   { id: "aquarium", emoji: "🐠", label: "Aquarium" },
-  { id: "park", emoji: "🎢", label: "Pretpark" },
-  { id: "escape", emoji: "🧩", label: "Escape room" },
-  { id: "golf", emoji: "⛳", label: "Mini golf" },
-  { id: "arcade", emoji: "🕹️", label: "Arcade" },
-  { id: "cooking", emoji: "👨‍🍳", label: "Samen koken" },
-  { id: "baking", emoji: "🍪", label: "Bakken" },
-  { id: "brunch", emoji: "🥞", label: "Brunch" },
+  { id: "park",     emoji: "🎢", label: "Pretpark" },
+  { id: "escape",   emoji: "🧩", label: "Escape room" },
+  { id: "golf",     emoji: "⛳", label: "Mini golf" },
+  { id: "arcade",   emoji: "🕹️", label: "Arcade" },
+  { id: "cooking",  emoji: "👨‍🍳", label: "Samen koken" },
+  { id: "baking",   emoji: "🍪", label: "Bakken" },
+  { id: "brunch",   emoji: "🥞", label: "Brunch" },
   { id: "icecream", emoji: "🍦", label: "IJs eten" },
   { id: "shopping", emoji: "🛍️", label: "Shoppen" },
-  { id: "market", emoji: "🧺", label: "Markt" },
-  { id: "chill", emoji: "🏠", label: "Thuis chillen" },
+  { id: "market",   emoji: "🧺", label: "Markt" },
+  { id: "chill",    emoji: "🏠", label: "Thuis chillen" },
 ];
 
-function Petals({ active }: { active: boolean }) {
-  const [pieces, setPieces] = useState<{ id: number; left: number; dur: number; delay: number; char: string }[]>([]);
+/* ── confetti ── */
+function Confetti({ active }: { active: boolean }) {
+  const [pieces, setPieces] = useState<
+    { id: number; left: number; dur: number; delay: number; emoji: string; size: number }[]
+  >([]);
+
   useEffect(() => {
     if (!active) return;
-    const chars = ["✦", "✧", "·", "✸", "✹", "◆", "◇"];
-    const arr = Array.from({ length: 24 }, (_, i) => ({
+    const pool = ["🌸","💕","✨","💗","🌺","💖","🎉","🥂","⭐"];
+    const arr = Array.from({ length: 36 }, (_, i) => ({
       id: i,
       left: Math.random() * 100,
-      dur: 2.5 + Math.random() * 2.5,
-      delay: Math.random() * 1.5,
-      char: chars[Math.floor(Math.random() * chars.length)],
+      dur: 2.8 + Math.random() * 2.5,
+      delay: Math.random() * 1.8,
+      emoji: pool[Math.floor(Math.random() * pool.length)],
+      size: 0.9 + Math.random() * 0.9,
     }));
     setPieces(arr);
-    setTimeout(() => setPieces([]), 6000);
+    setTimeout(() => setPieces([]), 7000);
   }, [active]);
 
   return (
@@ -51,217 +56,212 @@ function Petals({ active }: { active: boolean }) {
           left: `${p.left}%`,
           animationDuration: `${p.dur}s`,
           animationDelay: `${p.delay}s`,
-          fontSize: `${0.6 + Math.random() * 0.8}rem`,
-          color: ["#e11d48", "#f43f5e", "#fb7185", "#fda4af"][Math.floor(Math.random() * 4)],
+          fontSize: `${p.size}rem`,
         }}>
-          {p.char}
+          {p.emoji}
         </span>
       ))}
     </>
   );
 }
 
-function ProgressBar({ step }: { step: number }) {
+/* ── floating bg blobs ── */
+function Blobs() {
   return (
-    <div className="progress-bar">
-      {[0, 1, 2].map((i) => (
-        <div key={i} className={`prog-seg ${i === step ? "active" : i < step ? "done" : ""}`} />
+    <div style={{ position: "fixed", inset: 0, pointerEvents: "none", overflow: "hidden", zIndex: 0 }}>
+      <div style={{ position: "absolute", top: "-80px", right: "-80px", width: 340, height: 340, borderRadius: "50%", background: "radial-gradient(circle, rgba(253,164,175,.22) 0%, transparent 70%)" }} />
+      <div style={{ position: "absolute", bottom: "-60px", left: "-60px", width: 280, height: 280, borderRadius: "50%", background: "radial-gradient(circle, rgba(251,113,133,.15) 0%, transparent 70%)" }} />
+      <div style={{ position: "absolute", top: "40%", left: "-40px", width: 180, height: 180, borderRadius: "50%", background: "radial-gradient(circle, rgba(244,63,94,.08) 0%, transparent 70%)" }} />
+    </div>
+  );
+}
+
+/* ── progress bar ── */
+function ProgBar({ step }: { step: number }) {
+  return (
+    <div className="prog-wrap">
+      {[0,1,2].map((i) => (
+        <div key={i} className={`prog-seg ${i === step ? "on" : i < step ? "done" : ""}`} />
       ))}
     </div>
   );
 }
 
+/* ─────────────────────────────────────────
+   STEP 0 — Ask
+───────────────────────────────────────── */
 function AskStep({ onYes }: { onYes: () => void }) {
   const noRef = useRef<HTMLButtonElement>(null);
 
-  function moveNo(e: React.MouseEvent) {
-    const btn = noRef.current;
-    if (!btn) return;
+  function flee(e: React.MouseEvent) {
+    const btn = noRef.current; if (!btn) return;
     const bw = window.innerWidth, bh = window.innerHeight;
     let nx: number, ny: number;
     do {
-      nx = Math.random() * (bw - 140);
+      nx = Math.random() * (bw - 150);
       ny = Math.random() * (bh - 60);
-    } while (Math.abs(nx - e.clientX) < 150 || Math.abs(ny - e.clientY) < 100);
-    btn.style.position = "fixed";
-    btn.style.left = nx + "px";
-    btn.style.top = ny + "px";
-    btn.style.zIndex = "50";
+    } while (Math.abs(nx - e.clientX) < 160 || Math.abs(ny - e.clientY) < 100);
+    Object.assign(btn.style, { position: "fixed", left: nx + "px", top: ny + "px", zIndex: "50" });
   }
 
   return (
-    <div className="step-card" style={{ textAlign: "center" }}>
-      {/* Unsplash — romantic city lights, free to use */}
-      <div style={{
-        width: "100%",
-        height: "200px",
-        borderRadius: "14px",
-        overflow: "hidden",
-        marginBottom: "2rem",
-        position: "relative",
-      }}>
-        <img
-          src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=600&q=80&fit=crop"
-          alt=""
-          style={{ width: "100%", height: "100%", objectFit: "cover" }}
-        />
-        <div style={{
-          position: "absolute", inset: 0,
-          background: "linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 60%)",
-        }} />
-        <p className="font-display" style={{
-          position: "absolute", bottom: "1rem", left: "1.25rem",
-          color: "white", fontSize: "1.5rem", fontStyle: "italic",
-          textShadow: "0 1px 4px rgba(0,0,0,0.3)",
-        }}>
-          Hey hey 💌
-        </p>
+    <div className="step-card" style={{ textAlign: "center", position: "relative", zIndex: 1 }}>
+      {/* animated gradient banner */}
+      <div className="hero-banner">
+        <span>💝</span>
       </div>
 
-      <h1 className="font-display" style={{ fontSize: "2rem", lineHeight: 1.2, marginBottom: "0.6rem" }}>
-        Wil je op date
-        <br />met mij?
+      <h1 className="font-display" style={{ fontSize: "2rem", lineHeight: 1.25, marginBottom: "0.65rem" }}>
+        Hey, ik heb een<br />
+        <em style={{ color: "var(--pink)" }}>belangrijke vraag</em>...
       </h1>
-      <p style={{ color: "var(--mid)", fontSize: "0.95rem", marginBottom: "2rem" }}>
-        Kies zelf wat we gaan doen & wanneer.
+      <p style={{ color: "var(--muted)", fontSize: "1rem", marginBottom: "2.25rem", lineHeight: 1.6 }}>
+        Wil je op date met mij? 🥺
       </p>
 
-      <div style={{ display: "flex", gap: "0.75rem", justifyContent: "center", flexWrap: "wrap" }}>
-        <button className="btn-primary" onClick={onYes}>
-          Ja, natuurlijk 🥰
+      <div style={{ display: "flex", gap: "0.8rem", justifyContent: "center", flexWrap: "wrap" }}>
+        <button className="btn-yes" onClick={onYes}>
+          Ja, natuurlijk! 🥰
         </button>
-        <button ref={noRef} className="btn-no" onMouseEnter={moveNo} onClick={moveNo}>
-          Nee...
+        <button ref={noRef} className="btn-no" onMouseEnter={flee} onClick={flee}>
+          Nee... 😢
         </button>
       </div>
+
+      <p style={{ marginTop: "1.25rem", fontSize: "0.8rem", color: "#d1d5db" }}>
+        (er is maar één goed antwoord 😉)
+      </p>
     </div>
   );
 }
 
+/* ─────────────────────────────────────────
+   STEP 1 — Activity
+───────────────────────────────────────── */
 function ActivityStep({ onNext }: { onNext: (a: string) => void }) {
-  const [selected, setSelected] = useState("");
+  const [sel, setSel] = useState("");
 
   return (
-    <div className="step-card">
-      <ProgressBar step={0} />
-      <h2 className="font-display" style={{ fontSize: "1.6rem", marginBottom: "0.25rem" }}>Wat gaan we doen?</h2>
-      <p style={{ color: "var(--mid)", fontSize: "0.88rem", marginBottom: "1.25rem" }}>Scroll voor meer opties</p>
+    <div className="step-card" style={{ position: "relative", zIndex: 1 }}>
+      <ProgBar step={0} />
+
+      <div style={{ marginBottom: "1.25rem" }}>
+        <h2 className="font-display" style={{ fontSize: "1.65rem" }}>Wat gaan we doen? 🗺️</h2>
+      </div>
 
       <div className="activity-grid">
         {ACTIVITIES.map((a) => (
-          <div
-            key={a.id}
-            className={`activity-card ${selected === a.id ? "selected" : ""}`}
-            onClick={() => setSelected(a.id)}
-          >
-            <span className="act-emoji">{a.emoji}</span>
-            <span className="act-label">{a.label}</span>
+          <div key={a.id} className={`act-card ${sel === a.id ? "sel" : ""}`} onClick={() => setSel(a.id)}>
+            <span className="act-ico">{a.emoji}</span>
+            <span className="act-lbl">{a.label}</span>
           </div>
         ))}
       </div>
 
-      <button
-        className="btn-primary"
-        style={{ width: "100%" }}
-        onClick={() => selected && onNext(selected)}
-        disabled={!selected}
-      >
-        Volgende →
+      <button className="btn-next" disabled={!sel} onClick={() => sel && onNext(sel)}>
+        Volgende ✨
       </button>
     </div>
   );
 }
 
+/* ─────────────────────────────────────────
+   STEP 2 — Date & Time
+───────────────────────────────────────── */
 function DateTimeStep({ onNext }: { onNext: (d: string, t: string) => void }) {
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const today = new Date().toISOString().split("T")[0];
 
   return (
-    <div className="step-card">
-      <ProgressBar step={1} />
-      <h2 className="font-display" style={{ fontSize: "1.6rem", marginBottom: "0.25rem" }}>Wanneer?</h2>
-      <p style={{ color: "var(--mid)", fontSize: "0.88rem", marginBottom: "1.75rem" }}>Kies een datum & tijd</p>
+    <div className="step-card" style={{ position: "relative", zIndex: 1 }}>
+      <ProgBar step={1} />
 
-      <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem", marginBottom: "2rem" }}>
-        <div>
+      <div style={{ marginBottom: "1.5rem" }}>
+        <h2 className="font-display" style={{ fontSize: "1.65rem" }}>Wanneer? 📅</h2>
+        <p style={{ color: "var(--muted)", fontSize: "0.88rem", marginTop: "0.3rem" }}>
+          Kies een datum & tijd die jou uitkomt
+        </p>
+      </div>
+
+      <div style={{ display: "flex", flexDirection: "column", gap: "1rem", marginBottom: "2rem" }}>
+        <div className="field-wrap">
           <label className="field-label">Datum</label>
-          <input type="date" className="date-input" min={today} value={date} onChange={(e) => setDate(e.target.value)} />
+          <input type="date" className="field-input" min={today} value={date} onChange={(e) => setDate(e.target.value)} />
         </div>
-        <div>
+        <div className="field-wrap">
           <label className="field-label">Tijd</label>
-          <input type="time" className="time-input" value={time} onChange={(e) => setTime(e.target.value)} />
+          <input type="time" className="field-input" value={time} onChange={(e) => setTime(e.target.value)} />
         </div>
       </div>
 
-      <button
-        className="btn-primary"
-        style={{ width: "100%" }}
-        onClick={() => date && time && onNext(date, time)}
-        disabled={!date || !time}
-      >
-        Bevestig →
+      <button className="btn-next" disabled={!date || !time} onClick={() => date && time && onNext(date, time)}>
+        Bijna klaar 💕
       </button>
     </div>
   );
 }
 
+/* ─────────────────────────────────────────
+   MODAL — Confirm
+───────────────────────────────────────── */
 function ConfirmModal({ activity, date, time, onConfirm, onBack, loading }: {
   activity: string; date: string; time: string;
   onConfirm: () => void; onBack: () => void; loading: boolean;
 }) {
   const act = ACTIVITIES.find((a) => a.id === activity)!;
   const dateStr = new Date(date + "T12:00:00").toLocaleDateString("nl-NL", {
-    weekday: "long", day: "numeric", month: "long"
+    weekday: "long", day: "numeric", month: "long",
   });
   const timeStr = new Date(`2000-01-01T${time}`).toLocaleTimeString("nl-NL", {
-    hour: "2-digit", minute: "2-digit"
+    hour: "2-digit", minute: "2-digit",
   });
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-card">
-        <p style={{ fontSize: "0.75rem", fontWeight: 500, color: "var(--mid)", letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: "0.75rem" }}>
-          Bevestig je date
-        </p>
-        <h2 className="font-display" style={{ fontSize: "1.7rem", marginBottom: "1.5rem" }}>
-          Ziet dit er goed uit?
-        </h2>
+    <div className="modal-bg">
+      <div className="modal-box">
+        <div style={{ textAlign: "center", marginBottom: "1.5rem" }}>
+          <div style={{ fontSize: "2.8rem", marginBottom: "0.5rem" }}>🎉</div>
+          <h2 className="font-display" style={{ fontSize: "1.7rem" }}>Ons dateplan!</h2>
+          <p style={{ color: "var(--muted)", fontSize: "0.88rem", marginTop: "0.3rem" }}>
+            Even checken — klopt dit?
+          </p>
+        </div>
 
-        <div style={{ marginBottom: "1.5rem" }}>
-          <div className="summary-row">
-            <span style={{ fontSize: "1.4rem", width: "32px", textAlign: "center" }}>{act.emoji}</span>
+        <div style={{ background: "#fff8f9", borderRadius: "16px", padding: "0.25rem 1rem", marginBottom: "1.75rem", border: "1.5px solid var(--border)" }}>
+          <div className="sum-row">
+            <span className="sum-ico">{act.emoji}</span>
             <div>
-              <div style={{ fontSize: "0.75rem", color: "var(--mid)", textTransform: "uppercase", letterSpacing: "0.04em" }}>Activiteit</div>
-              <div style={{ fontWeight: 500 }}>{act.label}</div>
+              <div className="sum-label">Activiteit</div>
+              <div className="sum-val">{act.label}</div>
             </div>
           </div>
-          <div className="summary-row">
-            <span style={{ fontSize: "1.2rem", width: "32px", textAlign: "center" }}>📅</span>
+          <div className="sum-row">
+            <span className="sum-ico">📅</span>
             <div>
-              <div style={{ fontSize: "0.75rem", color: "var(--mid)", textTransform: "uppercase", letterSpacing: "0.04em" }}>Datum</div>
-              <div style={{ fontWeight: 500, textTransform: "capitalize" }}>{dateStr}</div>
+              <div className="sum-label">Datum</div>
+              <div className="sum-val" style={{ textTransform: "capitalize" }}>{dateStr}</div>
             </div>
           </div>
-          <div className="summary-row">
-            <span style={{ fontSize: "1.2rem", width: "32px", textAlign: "center" }}>⏰</span>
+          <div className="sum-row">
+            <span className="sum-ico">⏰</span>
             <div>
-              <div style={{ fontSize: "0.75rem", color: "var(--mid)", textTransform: "uppercase", letterSpacing: "0.04em" }}>Tijd</div>
-              <div style={{ fontWeight: 500 }}>{timeStr}</div>
+              <div className="sum-label">Tijd</div>
+              <div className="sum-val">{timeStr}</div>
             </div>
           </div>
         </div>
 
         <div style={{ display: "flex", gap: "0.75rem" }}>
           <button onClick={onBack} style={{
-            flex: 1, background: "none", border: "1px solid var(--border)",
-            borderRadius: "10px", padding: "0.85rem", cursor: "pointer",
-            fontFamily: "inherit", color: "var(--mid)", fontSize: "0.9rem"
+            flex: 1, background: "none", border: "1.5px solid var(--border)",
+            borderRadius: "14px", padding: "0.85rem", cursor: "pointer",
+            fontFamily: "inherit", color: "var(--muted)", fontSize: "0.92rem", fontWeight: 500,
           }}>
             ← Terug
           </button>
-          <button className="btn-primary" style={{ flex: 2 }} onClick={onConfirm} disabled={loading}>
-            {loading ? "Opslaan..." : "Het is een date! 💖"}
+          <button className="btn-yes" style={{ flex: 2, borderRadius: "14px" }} onClick={onConfirm} disabled={loading}>
+            {loading ? "Opslaan... 💾" : "Het is een date! 💖"}
           </button>
         </div>
       </div>
@@ -269,50 +269,47 @@ function ConfirmModal({ activity, date, time, onConfirm, onBack, loading }: {
   );
 }
 
+/* ─────────────────────────────────────────
+   STEP 3 — Success
+───────────────────────────────────────── */
 function SuccessStep() {
   return (
-    <div className="step-card" style={{ textAlign: "center" }}>
-      <div style={{
-        width: "100%", height: "180px",
-        borderRadius: "14px", overflow: "hidden",
-        marginBottom: "2rem", position: "relative",
-      }}>
-        <img
-          src="https://images.unsplash.com/photo-1529543544282-ea669407fca3?w=600&q=80&fit=crop"
-          alt=""
-          style={{ width: "100%", height: "100%", objectFit: "cover" }}
-        />
-        <div style={{
-          position: "absolute", inset: 0,
-          background: "linear-gradient(to top, rgba(0,0,0,0.4) 0%, transparent 60%)",
-        }} />
-      </div>
-
-      <h2 className="font-display" style={{ fontSize: "2rem", marginBottom: "0.6rem" }}>
-        Het is een date 🎉
+    <div className="step-card" style={{ textAlign: "center", position: "relative", zIndex: 1 }}>
+      <div style={{ fontSize: "4.5rem", marginBottom: "1.25rem" }}>🥰</div>
+      <h2 className="font-display" style={{ fontSize: "2rem", color: "var(--pink)", marginBottom: "0.6rem" }}>
+        Het is een date!
       </h2>
-      <p style={{ color: "var(--mid)", fontSize: "0.95rem", lineHeight: 1.7, marginBottom: "1.5rem" }}>
-        Ik zorg dat het een goede avond wordt.
+      <p style={{ color: "var(--muted)", fontSize: "1rem", lineHeight: 1.7, marginBottom: "2rem" }}>
+        Ik kan niet wachten! Ik zorg ervoor dat alles
+        <br />
+        <strong className="font-display" style={{ color: "var(--text)", fontSize: "1.1rem", fontStyle: "italic" }}>
+          absoluut perfect wordt voor jou 💕
+        </strong>
       </p>
       <div style={{
-        background: "#f9fafb", borderRadius: "12px",
-        padding: "1rem 1.25rem", fontSize: "0.88rem", color: "var(--mid)",
-        border: "1px solid var(--border)"
+        background: "#fff8f9", borderRadius: "14px",
+        padding: "1rem 1.25rem", fontSize: "0.9rem",
+        color: "var(--muted)", border: "1.5px solid var(--border)",
+        display: "flex", alignItems: "center", justifyContent: "center", gap: "0.5rem",
       }}>
-        ✓ Opgeslagen — ik tel de dagen af
+        <span>✅</span>
+        <span>Onze date is opgeslagen — ik tel de dagen af 🗓️</span>
       </div>
     </div>
   );
 }
 
+/* ─────────────────────────────────────────
+   ROOT
+───────────────────────────────────────── */
 export default function Home() {
   const [step, setStep] = useState<"ask" | "activity" | "datetime" | "success">("ask");
   const [activity, setActivity] = useState("");
-  const [date, setDate] = useState("");
-  const [time, setTime] = useState("");
+  const [date, setDate]         = useState("");
+  const [time, setTime]         = useState("");
   const [showModal, setShowModal] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [showPetals, setShowPetals] = useState(false);
+  const [loading, setLoading]   = useState(false);
+  const [showConfetti, setShowConfetti] = useState(false);
 
   async function handleConfirm() {
     setLoading(true);
@@ -325,17 +322,19 @@ export default function Home() {
     } catch (e) { console.error(e); }
     setLoading(false);
     setShowModal(false);
-    setShowPetals(true);
+    setShowConfetti(true);
     setStep("success");
   }
 
   return (
-    <main style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", padding: "2rem 1rem" }}>
-      <Petals active={showPetals} />
+    <main style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", padding: "2rem 1rem", position: "relative" }}>
+      <Blobs />
+      <Confetti active={showConfetti} />
 
-      {step === "ask" && <AskStep onYes={() => setStep("activity")} />}
+      {step === "ask"      && <AskStep onYes={() => setStep("activity")} />}
       {step === "activity" && <ActivityStep onNext={(a) => { setActivity(a); setStep("datetime"); }} />}
       {step === "datetime" && <DateTimeStep onNext={(d, t) => { setDate(d); setTime(t); setShowModal(true); }} />}
+      {step === "success"  && <SuccessStep />}
 
       {showModal && (
         <ConfirmModal
@@ -345,7 +344,6 @@ export default function Home() {
           loading={loading}
         />
       )}
-      {step === "success" && <SuccessStep />}
     </main>
   );
 }
