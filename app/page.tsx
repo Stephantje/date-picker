@@ -128,9 +128,7 @@ function AskStep({ onYes }: { onYes: () => void }) {
         </button>
       </div>
 
-      <p style={{ marginTop: "1.25rem", fontSize: "0.8rem", color: "#d1d5db" }}>
-        (er is maar één goed antwoord 😉)
-      </p>
+
     </div>
   );
 }
@@ -166,11 +164,111 @@ function ActivityStep({ onNext }: { onNext: (a: string) => void }) {
 }
 
 /* ─────────────────────────────────────────
+   CUSTOM TIME PICKER — scroll drum
+───────────────────────────────────────── */
+function TimePicker({ value, onChange }: { value: string; onChange: (v: string) => void }) {
+  const hours   = Array.from({ length: 24 }, (_, i) => String(i).padStart(2, "0"));
+  const minutes = ["00", "15", "30", "45"];
+
+  const [selH, setSelH] = useState(value ? value.split(":")[0] : "19");
+  const [selM, setSelM] = useState(value ? value.split(":")[1] : "00");
+
+  function pick(h: string, m: string) {
+    setSelH(h); setSelM(m);
+    onChange(`${h}:${m}`);
+  }
+
+  const ITEM_H = 44;
+  const VISIBLE = 5;
+
+  function Drum({ items, selected, onSelect }: { items: string[]; selected: string; onSelect: (v: string) => void }) {
+    const ref = useRef<HTMLDivElement>(null);
+    const selIdx = items.indexOf(selected);
+
+    useEffect(() => {
+      const el = ref.current; if (!el) return;
+      el.scrollTop = selIdx * ITEM_H;
+    }, [selIdx]);
+
+    function onScroll() {
+      const el = ref.current; if (!el) return;
+      const idx = Math.round(el.scrollTop / ITEM_H);
+      const clamped = Math.max(0, Math.min(items.length - 1, idx));
+      if (items[clamped] !== selected) onSelect(items[clamped]);
+    }
+
+    return (
+      <div style={{ position: "relative", flex: 1 }}>
+        {/* top fade */}
+        <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: ITEM_H * 2, background: "linear-gradient(to bottom, white 0%, transparent 100%)", pointerEvents: "none", zIndex: 2, borderRadius: "12px 12px 0 0" }} />
+        {/* bottom fade */}
+        <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: ITEM_H * 2, background: "linear-gradient(to top, white 0%, transparent 100%)", pointerEvents: "none", zIndex: 2, borderRadius: "0 0 12px 12px" }} />
+        {/* selection highlight */}
+        <div style={{
+          position: "absolute", top: "50%", left: 8, right: 8,
+          height: ITEM_H, transform: "translateY(-50%)",
+          background: "var(--pink-pale)", borderRadius: "10px",
+          border: "1.5px solid var(--border)", zIndex: 1, pointerEvents: "none",
+        }} />
+        {/* scroll container */}
+        <div
+          ref={ref}
+          onScroll={onScroll}
+          style={{
+            height: ITEM_H * VISIBLE,
+            overflowY: "scroll",
+            scrollSnapType: "y mandatory",
+            scrollbarWidth: "none",
+            position: "relative", zIndex: 3,
+          }}
+        >
+          {/* padding top/bottom so first/last item can center */}
+          <div style={{ height: ITEM_H * 2 }} />
+          {items.map((item) => (
+            <div
+              key={item}
+              onClick={() => onSelect(item)}
+              style={{
+                height: ITEM_H,
+                display: "flex", alignItems: "center", justifyContent: "center",
+                scrollSnapAlign: "center",
+                fontSize: item === selected ? "1.5rem" : "1.1rem",
+                fontWeight: item === selected ? 700 : 400,
+                color: item === selected ? "var(--pink)" : "var(--muted)",
+                cursor: "pointer",
+                transition: "font-size .15s, color .15s, font-weight .15s",
+                userSelect: "none",
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
+              }}
+            >
+              {item}
+            </div>
+          ))}
+          <div style={{ height: ITEM_H * 2 }} />
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div style={{
+      border: "1.5px solid var(--border)", borderRadius: "16px",
+      overflow: "hidden", background: "white",
+      display: "flex", alignItems: "stretch",
+    }}>
+      <Drum items={hours}   selected={selH} onSelect={(h) => pick(h, selM)} />
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.6rem", fontWeight: 700, color: "var(--muted)", width: "24px", flexShrink: 0 }}>:</div>
+      <Drum items={minutes} selected={selM} onSelect={(m) => pick(selH, m)} />
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────
    STEP 2 — Date & Time
 ───────────────────────────────────────── */
 function DateTimeStep({ onNext }: { onNext: (d: string, t: string) => void }) {
   const [date, setDate] = useState("");
-  const [time, setTime] = useState("");
+  const [time, setTime] = useState("19:00");
   const today = new Date().toISOString().split("T")[0];
 
   return (
@@ -184,18 +282,18 @@ function DateTimeStep({ onNext }: { onNext: (d: string, t: string) => void }) {
         </p>
       </div>
 
-      <div style={{ display: "flex", flexDirection: "column", gap: "1rem", marginBottom: "2rem" }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem", marginBottom: "2rem" }}>
         <div className="field-wrap">
           <label className="field-label">Datum</label>
           <input type="date" className="field-input" min={today} value={date} onChange={(e) => setDate(e.target.value)} />
         </div>
         <div className="field-wrap">
           <label className="field-label">Tijd</label>
-          <input type="time" className="field-input" value={time} onChange={(e) => setTime(e.target.value)} />
+          <TimePicker value={time} onChange={setTime} />
         </div>
       </div>
 
-      <button className="btn-next" disabled={!date || !time} onClick={() => date && time && onNext(date, time)}>
+      <button className="btn-next" disabled={!date} onClick={() => date && onNext(date, time)}>
         Bijna klaar 💕
       </button>
     </div>
