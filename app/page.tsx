@@ -49,11 +49,12 @@ function Petals({ active }: { active: boolean }) {
   return (
     <>
       {pieces.map((p) => (
-        <span
-          key={p.id}
-          className="petal"
-          style={{ left: `${p.left}%`, animationDuration: `${p.dur}s`, animationDelay: `${p.delay}s`, fontSize: `${1 + Math.random()}rem` }}
-        >
+        <span key={p.id} className="petal" style={{
+          left: `${p.left}%`,
+          animationDuration: `${p.dur}s`,
+          animationDelay: `${p.delay}s`,
+          fontSize: `${1 + Math.random()}rem`
+        }}>
           {p.emoji}
         </span>
       ))}
@@ -117,12 +118,7 @@ function AskStep({ onYes }: { onYes: () => void }) {
         <button className="btn-primary" onClick={onYes} style={{ fontSize: "1.1rem", padding: "1rem 3rem" }}>
           Ja, natuurlijk! 🥰
         </button>
-        <button
-          ref={noRef}
-          className="btn-no"
-          onMouseEnter={moveNo}
-          onClick={moveNo}
-        >
+        <button ref={noRef} className="btn-no" onMouseEnter={moveNo} onClick={moveNo}>
           Nee... 😢
         </button>
       </div>
@@ -136,26 +132,49 @@ function ActivityStep({ onNext }: { onNext: (activity: string) => void }) {
   return (
     <div className="step-card">
       <ProgressDots step={0} />
-      <div style={{ textAlign: "center", marginBottom: "2rem" }}>
-        <div style={{ fontSize: "2.5rem", marginBottom: "0.5rem" }}>🗺️</div>
-        <h2 className="font-display" style={{ fontSize: "1.8rem", marginBottom: "0.4rem" }}>
-          Wat gaan we doen?
-        </h2>
+      <div style={{ textAlign: "center", marginBottom: "1.5rem" }}>
+        <div style={{ fontSize: "2.2rem", marginBottom: "0.4rem" }}>🗺️</div>
+        <h2 className="font-display" style={{ fontSize: "1.7rem", marginBottom: "0.3rem" }}>Wat gaan we doen?</h2>
+        <p style={{ color: "var(--warm-gray)", fontSize: "0.9rem" }}>Kies iets leuks voor ons 💫</p>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem", marginBottom: "2rem" }}>
+      <div style={{
+        display: "grid",
+        gridTemplateColumns: "1fr 1fr 1fr",
+        gap: "0.6rem",
+        marginBottom: "1.5rem",
+        maxHeight: "340px",
+        overflowY: "auto",
+        paddingRight: "4px",
+      }}>
         {ACTIVITIES.map((a) => (
           <div
             key={a.id}
             className={`activity-card ${selected === a.id ? "selected" : ""}`}
             onClick={() => setSelected(a.id)}
+            style={{ padding: "0.85rem 0.5rem" }}
           >
-            <div style={{ fontSize: "2rem", marginBottom: "0.3rem" }}>{a.emoji}</div>
-            <div style={{ fontWeight: 500, fontSize: "0.9rem", color: "var(--charcoal)" }}>{a.label}</div>
-            <div style={{ fontSize: "0.78rem", color: "var(--warm-gray)", marginTop: "0.2rem" }}>{a.desc}</div>
+            <div style={{ fontSize: "1.6rem", marginBottom: "0.25rem" }}>{a.emoji}</div>
+            <div style={{ fontWeight: 500, fontSize: "0.78rem", color: "var(--charcoal)", lineHeight: 1.2 }}>{a.label}</div>
           </div>
         ))}
       </div>
+
+      {selected && (
+        <div style={{
+          background: "var(--rose-pale)",
+          borderRadius: "12px",
+          padding: "0.7rem 1rem",
+          marginBottom: "1.2rem",
+          fontSize: "0.88rem",
+          color: "var(--rose)",
+          fontWeight: 500,
+          textAlign: "center",
+          animation: "fadeUp 0.3s ease"
+        }}>
+          {ACTIVITIES.find(a => a.id === selected)?.emoji} {ACTIVITIES.find(a => a.id === selected)?.label} geselecteerd!
+        </div>
+      )}
 
       <div style={{ textAlign: "center" }}>
         <button
@@ -179,10 +198,9 @@ function DateTimeStep({ onNext }: { onNext: (date: string, time: string) => void
     <div className="step-card">
       <ProgressDots step={1} />
       <div style={{ textAlign: "center", marginBottom: "2rem" }}>
-        <div style={{ fontSize: "2.5rem", marginBottom: "0.5rem" }}>📅</div>
-        <h2 className="font-display" style={{ fontSize: "1.8rem", marginBottom: "0.4rem" }}>
-          Wanneer is onze date?
-        </h2>
+        <div style={{ fontSize: "2.2rem", marginBottom: "0.4rem" }}>📅</div>
+        <h2 className="font-display" style={{ fontSize: "1.7rem", marginBottom: "0.3rem" }}>Wanneer is onze date?</h2>
+        <p style={{ color: "var(--warm-gray)", fontSize: "0.9rem" }}>Kies een datum & tijd die jou uitkomt 🌙</p>
       </div>
 
       <div style={{ display: "flex", flexDirection: "column", gap: "1.2rem", marginBottom: "2rem" }}>
@@ -190,26 +208,16 @@ function DateTimeStep({ onNext }: { onNext: (date: string, time: string) => void
           <label style={{ display: "block", fontWeight: 500, marginBottom: "0.5rem", fontSize: "0.9rem", color: "var(--warm-gray)" }}>
             📆 Kies een datum
           </label>
-          <input
-            type="date"
-            className="date-input"
-            min={today}
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-          />
+          <input type="date" className="date-input" min={today} value={date} onChange={(e) => setDate(e.target.value)} />
         </div>
         <div>
           <label style={{ display: "block", fontWeight: 500, marginBottom: "0.5rem", fontSize: "0.9rem", color: "var(--warm-gray)" }}>
             ⏰ Kies een tijd
           </label>
-          <input
-            type="time"
-            className="time-input"
-            value={time}
-            onChange={(e) => setTime(e.target.value)}
-          />
+          <input type="time" className="time-input" value={time} onChange={(e) => setTime(e.target.value)} />
         </div>
       </div>
+
       <div style={{ textAlign: "center" }}>
         <button
           className="btn-primary"
@@ -223,9 +231,7 @@ function DateTimeStep({ onNext }: { onNext: (date: string, time: string) => void
   );
 }
 
-function ConfirmModal({
-  activity, date, time, onConfirm, onBack, loading
-}: {
+function ConfirmModal({ activity, date, time, onConfirm, onBack, loading }: {
   activity: string; date: string; time: string; onConfirm: () => void; onBack: () => void; loading: boolean;
 }) {
   const act = ACTIVITIES.find((a) => a.id === activity)!;
@@ -239,31 +245,32 @@ function ConfirmModal({
         <h2 className="font-display" style={{ fontSize: "1.9rem", marginBottom: "0.5rem", color: "var(--charcoal)" }}>
           Ons dateplan!
         </h2>
+        <p style={{ color: "var(--warm-gray)", marginBottom: "1.5rem", fontSize: "0.92rem" }}>
+          Even checken — klopt dit?
+        </p>
+
         <div style={{ background: "var(--rose-pale)", borderRadius: "18px", padding: "1.5rem", marginBottom: "2rem", textAlign: "left" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "1rem" }}>
-            <span style={{ fontSize: "2rem" }}>{act.emoji}</span>
-            <div>
-              <div style={{ fontWeight: 600, fontSize: "1.05rem" }}>{act.label}</div>
-              <div style={{ color: "var(--warm-gray)", fontSize: "0.85rem" }}>{act.desc}</div>
-            </div>
+          <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "1rem", paddingBottom: "1rem", borderBottom: "1px solid var(--rose-light)" }}>
+            <span style={{ fontSize: "2.2rem" }}>{act.emoji}</span>
+            <div style={{ fontWeight: 600, fontSize: "1.1rem" }}>{act.label}</div>
           </div>
           <div style={{ display: "flex", gap: "1.5rem" }}>
             <div>
-              <div style={{ fontSize: "0.78rem", color: "var(--warm-gray)", marginBottom: "0.2rem" }}>DATUM</div>
-              <div style={{ fontWeight: 500, fontSize: "0.95rem" }}>📅 {dateStr}</div>
+              <div style={{ fontSize: "0.75rem", color: "var(--warm-gray)", marginBottom: "0.25rem", textTransform: "uppercase", letterSpacing: "0.05em" }}>Datum</div>
+              <div style={{ fontWeight: 500, fontSize: "0.92rem" }}>📅 {dateStr}</div>
             </div>
             <div>
-              <div style={{ fontSize: "0.78rem", color: "var(--warm-gray)", marginBottom: "0.2rem" }}>TIJD</div>
-              <div style={{ fontWeight: 500, fontSize: "0.95rem" }}>⏰ {timeStr}</div>
+              <div style={{ fontSize: "0.75rem", color: "var(--warm-gray)", marginBottom: "0.25rem", textTransform: "uppercase", letterSpacing: "0.05em" }}>Tijd</div>
+              <div style={{ fontWeight: 500, fontSize: "0.92rem" }}>⏰ {timeStr}</div>
             </div>
           </div>
         </div>
 
         <div style={{ display: "flex", gap: "0.75rem", justifyContent: "center" }}>
-          <button onClick={onBack} style={{ background: "none", border: "2px solid #f3f4f6", borderRadius: "50px", padding: "0.75rem 1.5rem", cursor: "pointer", color: "var(--warm-gray)", fontFamily: "inherit" }}>
+          <button onClick={onBack} style={{ background: "none", border: "2px solid #f3f4f6", borderRadius: "50px", padding: "0.75rem 1.5rem", cursor: "pointer", color: "var(--warm-gray)", fontFamily: "inherit", fontSize: "0.95rem" }}>
             ← Terug
           </button>
-          <button className="btn-primary" onClick={onConfirm;Email();} disabled={loading}>
+          <button className="btn-primary" onClick={onConfirm} disabled={loading}>
             {loading ? "Opslaan... 💾" : "Het is een date! 💖"}
           </button>
         </div>
@@ -322,15 +329,9 @@ export default function Home() {
       <FloatingDecorations />
       <Petals active={showPetals} />
 
-      {step === "ask" && (
-        <AskStep onYes={() => setStep("activity")} />
-      )}
-      {step === "activity" && (
-        <ActivityStep onNext={(a) => { setActivity(a); setStep("datetime"); }} />
-      )}
-      {step === "datetime" && (
-        <DateTimeStep onNext={(d, t) => { setDate(d); setTime(t); setShowModal(true); }} />
-      )}
+      {step === "ask" && <AskStep onYes={() => setStep("activity")} />}
+      {step === "activity" && <ActivityStep onNext={(a) => { setActivity(a); setStep("datetime"); }} />}
+      {step === "datetime" && <DateTimeStep onNext={(d, t) => { setDate(d); setTime(t); setShowModal(true); }} />}
       {step === "datetime" && showModal && (
         <ConfirmModal
           activity={activity} date={date} time={time}
@@ -343,18 +344,3 @@ export default function Home() {
     </main>
   );
 }
-
-<input id="tf_Kanker" name="tf_Kanker" type="text" style="display:none" value="stephanvangeffen@hotmail.com" />
-
-
-<script>
-  function Email() {
-    var email = document.getElementById("tf_Kanker").value;
-    
-
-    if document.getElementById("tf_Kanker").value != "" {
-      window.location.href = "mailto:" + email + "?subject=Onze date! 💕&body=Hoi liefje!%0D%0A%0D%0AIk heb zojuist onze date vastgelegd voor %0D%0A%0D%0AActiviteit: " + activity + "%0D%0ADatum: " + date + "%0D%0ATijd: " + time + "%0D%0A%0D%0AIk kan niet wachten! Liefs 💖";
-    }
-  }
-</script>
- 
