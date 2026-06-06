@@ -2,48 +2,46 @@
 import { useState, useRef, useEffect } from "react";
 
 const ACTIVITIES = [
-  { id: "dinner", emoji: "🍝", label: "Uit eten", desc: "" },
-  { id: "coffee", emoji: "☕", label: "Koffie", desc: "" },
-  { id: "drinks", emoji: "🍹", label: "Drankjes", desc: "" },
-  { id: "walk", emoji: "🌸", label: "Wandelen", desc: "" },
-  { id: "movie", emoji: "🎬", label: "Filmavond", desc: "" },
-  { id: "bowling", emoji: "🎳", label: "Bowlen", desc: "" },
-  { id: "museum", emoji: "🖼️", label: "Museum", desc: "" },
-  { id: "gallery", emoji: "🎨", label: "Kunstgalerie", desc: "" },
-  { id: "theater", emoji: "🎭", label: "Theater", desc: "" },
-  { id: "concert", emoji: "🎶", label: "Concert", desc: "" },
-  { id: "cinema_special", emoji: "🍿", label: "Speciale bioscoop", desc: "" },
-  { id: "zoo", emoji: "🦁", label: "Dierentuin", desc: "" },
-  { id: "aquarium", emoji: "🐠", label: "Aquarium", desc: "" },
-  { id: "amusement_park", emoji: "🎢", label: "Pretpark", desc: "" },
-  { id: "escape_room", emoji: "🧩", label: "Escape room", desc: "" },
-  { id: "mini_golf", emoji: "⛳", label: "Mini golf", desc: "" },
-  { id: "arcade", emoji: "🕹️", label: "Arcade", desc: "" },
-  { id: "cooking", emoji: "👨‍🍳", label: "Samen koken", desc: "" },
-  { id: "baking", emoji: "🍪", label: "Bakken", desc: "" },
-  { id: "brunch", emoji: "🥞", label: "Brunch", desc: "" },
-  { id: "ice_cream", emoji: "🍦", label: "IJs eten", desc: "" },
-  { id: "shopping", emoji: "🛍️", label: "Shoppen", desc: "" },
-  { id: "market", emoji: "🧺", label: "Markt bezoeken", desc: "" },
-  { id: "home_chill", emoji: "🏠", label: "Thuis chillen", desc: "" },
+  { id: "dinner", emoji: "🍝", label: "Uit eten" },
+  { id: "coffee", emoji: "☕", label: "Koffie" },
+  { id: "drinks", emoji: "🍹", label: "Drankjes" },
+  { id: "walk", emoji: "🌿", label: "Wandelen" },
+  { id: "movie", emoji: "🎬", label: "Filmavond" },
+  { id: "bowling", emoji: "🎳", label: "Bowlen" },
+  { id: "museum", emoji: "🖼️", label: "Museum" },
+  { id: "gallery", emoji: "🎨", label: "Kunstgalerie" },
+  { id: "theater", emoji: "🎭", label: "Theater" },
+  { id: "concert", emoji: "🎶", label: "Concert" },
+  { id: "cinema", emoji: "🍿", label: "Bioscoop" },
+  { id: "zoo", emoji: "🦁", label: "Dierentuin" },
+  { id: "aquarium", emoji: "🐠", label: "Aquarium" },
+  { id: "park", emoji: "🎢", label: "Pretpark" },
+  { id: "escape", emoji: "🧩", label: "Escape room" },
+  { id: "golf", emoji: "⛳", label: "Mini golf" },
+  { id: "arcade", emoji: "🕹️", label: "Arcade" },
+  { id: "cooking", emoji: "👨‍🍳", label: "Samen koken" },
+  { id: "baking", emoji: "🍪", label: "Bakken" },
+  { id: "brunch", emoji: "🥞", label: "Brunch" },
+  { id: "icecream", emoji: "🍦", label: "IJs eten" },
+  { id: "shopping", emoji: "🛍️", label: "Shoppen" },
+  { id: "market", emoji: "🧺", label: "Markt" },
+  { id: "chill", emoji: "🏠", label: "Thuis chillen" },
 ];
 
 function Petals({ active }: { active: boolean }) {
-  const [pieces, setPieces] = useState<{ id: number; left: number; dur: number; delay: number; emoji: string }[]>([]);
-
+  const [pieces, setPieces] = useState<{ id: number; left: number; dur: number; delay: number; char: string }[]>([]);
   useEffect(() => {
     if (!active) return;
-    const emojis = ["🌸", "💕", "🌹", "✨", "💗", "🌺", "💖"];
-    const arr = Array.from({ length: 30 }, (_, i) => ({
+    const chars = ["✦", "✧", "·", "✸", "✹", "◆", "◇"];
+    const arr = Array.from({ length: 24 }, (_, i) => ({
       id: i,
       left: Math.random() * 100,
-      dur: 3 + Math.random() * 3,
-      delay: Math.random() * 2,
-      emoji: emojis[Math.floor(Math.random() * emojis.length)],
+      dur: 2.5 + Math.random() * 2.5,
+      delay: Math.random() * 1.5,
+      char: chars[Math.floor(Math.random() * chars.length)],
     }));
     setPieces(arr);
-    const t = setTimeout(() => setPieces([]), 7000);
-    return () => clearTimeout(t);
+    setTimeout(() => setPieces([]), 6000);
   }, [active]);
 
   return (
@@ -53,35 +51,21 @@ function Petals({ active }: { active: boolean }) {
           left: `${p.left}%`,
           animationDuration: `${p.dur}s`,
           animationDelay: `${p.delay}s`,
-          fontSize: `${1 + Math.random()}rem`
+          fontSize: `${0.6 + Math.random() * 0.8}rem`,
+          color: ["#e11d48", "#f43f5e", "#fb7185", "#fda4af"][Math.floor(Math.random() * 4)],
         }}>
-          {p.emoji}
+          {p.char}
         </span>
       ))}
     </>
   );
 }
 
-function FloatingDecorations() {
+function ProgressBar({ step }: { step: number }) {
   return (
-    <div className="fixed inset-0 pointer-events-none overflow-hidden">
-      <div className="float-a absolute top-16 left-8 text-5xl opacity-20">🌸</div>
-      <div className="float-b absolute top-24 right-12 text-4xl opacity-15">💕</div>
-      <div className="float-a absolute bottom-32 left-16 text-3xl opacity-20" style={{ animationDelay: "2s" }}>✨</div>
-      <div className="float-b absolute bottom-20 right-8 text-4xl opacity-15" style={{ animationDelay: "1s" }}>🌹</div>
-      <div className="float-a absolute top-1/2 left-4 text-2xl opacity-10" style={{ animationDelay: "3s" }}>💗</div>
-      <div className="float-b absolute top-1/3 right-4 text-2xl opacity-10" style={{ animationDelay: "0.5s" }}>🌺</div>
-      <div style={{ position: "absolute", top: "-10%", right: "-5%", width: "400px", height: "400px", borderRadius: "50%", background: "radial-gradient(circle, rgba(244,63,94,0.07) 0%, transparent 70%)" }} />
-      <div style={{ position: "absolute", bottom: "-10%", left: "-5%", width: "350px", height: "350px", borderRadius: "50%", background: "radial-gradient(circle, rgba(251,113,133,0.07) 0%, transparent 70%)" }} />
-    </div>
-  );
-}
-
-function ProgressDots({ step }: { step: number }) {
-  return (
-    <div className="progress-dots">
+    <div className="progress-bar">
       {[0, 1, 2].map((i) => (
-        <div key={i} className={`dot ${i === step ? "active" : i < step ? "done" : ""}`} />
+        <div key={i} className={`prog-seg ${i === step ? "active" : i < step ? "done" : ""}`} />
       ))}
     </div>
   );
@@ -96,9 +80,9 @@ function AskStep({ onYes }: { onYes: () => void }) {
     const bw = window.innerWidth, bh = window.innerHeight;
     let nx: number, ny: number;
     do {
-      nx = Math.random() * (bw - 120);
+      nx = Math.random() * (bw - 140);
       ny = Math.random() * (bh - 60);
-    } while (Math.abs(nx - e.clientX) < 120 || Math.abs(ny - e.clientY) < 80);
+    } while (Math.abs(nx - e.clientX) < 150 || Math.abs(ny - e.clientY) < 100);
     btn.style.position = "fixed";
     btn.style.left = nx + "px";
     btn.style.top = ny + "px";
@@ -107,171 +91,177 @@ function AskStep({ onYes }: { onYes: () => void }) {
 
   return (
     <div className="step-card" style={{ textAlign: "center" }}>
-      <div className="heartbeat" style={{ fontSize: "5rem", marginBottom: "1.5rem" }}>💝</div>
-      <h1 className="font-display" style={{ fontSize: "2.2rem", color: "var(--charcoal)", lineHeight: 1.2, marginBottom: "0.75rem" }}>
-        Hey hey 💕
+      {/* Unsplash — romantic city lights, free to use */}
+      <div style={{
+        width: "100%",
+        height: "200px",
+        borderRadius: "14px",
+        overflow: "hidden",
+        marginBottom: "2rem",
+        position: "relative",
+      }}>
+        <img
+          src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=600&q=80&fit=crop"
+          alt=""
+          style={{ width: "100%", height: "100%", objectFit: "cover" }}
+        />
+        <div style={{
+          position: "absolute", inset: 0,
+          background: "linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 60%)",
+        }} />
+        <p className="font-display" style={{
+          position: "absolute", bottom: "1rem", left: "1.25rem",
+          color: "white", fontSize: "1.5rem", fontStyle: "italic",
+          textShadow: "0 1px 4px rgba(0,0,0,0.3)",
+        }}>
+          Hey hey 💌
+        </p>
+      </div>
+
+      <h1 className="font-display" style={{ fontSize: "2rem", lineHeight: 1.2, marginBottom: "0.6rem" }}>
+        Wil je op date
+        <br />met mij?
       </h1>
-      <p style={{ color: "var(--warm-gray)", fontSize: "1.1rem", marginBottom: "2.5rem", lineHeight: 1.6 }}>
-        <em className="font-display" style={{ color: "var(--rose)", fontSize: "1.3rem" }}>Wil je op date met mij?</em>
+      <p style={{ color: "var(--mid)", fontSize: "0.95rem", marginBottom: "2rem" }}>
+        Kies zelf wat we gaan doen & wanneer.
       </p>
-      <div style={{ display: "flex", gap: "1rem", justifyContent: "center", alignItems: "center", flexWrap: "wrap" }}>
-        <button className="btn-primary" onClick={onYes} style={{ fontSize: "1.1rem", padding: "1rem 3rem" }}>
-          Ja, natuurlijk! 🥰
+
+      <div style={{ display: "flex", gap: "0.75rem", justifyContent: "center", flexWrap: "wrap" }}>
+        <button className="btn-primary" onClick={onYes}>
+          Ja, natuurlijk 🥰
         </button>
         <button ref={noRef} className="btn-no" onMouseEnter={moveNo} onClick={moveNo}>
-          Nee... 😢
+          Nee...
         </button>
       </div>
     </div>
   );
 }
 
-function ActivityStep({ onNext }: { onNext: (activity: string) => void }) {
-  const [selected, setSelected] = useState<string>("");
+function ActivityStep({ onNext }: { onNext: (a: string) => void }) {
+  const [selected, setSelected] = useState("");
 
   return (
     <div className="step-card">
-      <ProgressDots step={0} />
-      <div style={{ textAlign: "center", marginBottom: "1.5rem" }}>
-        <div style={{ fontSize: "2.2rem", marginBottom: "0.4rem" }}>🗺️</div>
-        <h2 className="font-display" style={{ fontSize: "1.7rem", marginBottom: "0.3rem" }}>Wat gaan we doen?</h2>
-        <p style={{ color: "var(--warm-gray)", fontSize: "0.9rem" }}>Kies iets leuks voor ons 💫</p>
-      </div>
+      <ProgressBar step={0} />
+      <h2 className="font-display" style={{ fontSize: "1.6rem", marginBottom: "0.25rem" }}>Wat gaan we doen?</h2>
+      <p style={{ color: "var(--mid)", fontSize: "0.88rem", marginBottom: "1.25rem" }}>Scroll voor meer opties</p>
 
-      <div style={{
-        display: "grid",
-        gridTemplateColumns: "1fr 1fr 1fr",
-        gap: "0.6rem",
-        marginBottom: "1.5rem",
-        maxHeight: "340px",
-        overflowY: "auto",
-        paddingRight: "4px",
-      }}>
+      <div className="activity-grid">
         {ACTIVITIES.map((a) => (
           <div
             key={a.id}
             className={`activity-card ${selected === a.id ? "selected" : ""}`}
             onClick={() => setSelected(a.id)}
-            style={{ padding: "0.85rem 0.5rem" }}
           >
-            <div style={{ fontSize: "1.6rem", marginBottom: "0.25rem" }}>{a.emoji}</div>
-            <div style={{ fontWeight: 500, fontSize: "0.78rem", color: "var(--charcoal)", lineHeight: 1.2 }}>{a.label}</div>
+            <span className="act-emoji">{a.emoji}</span>
+            <span className="act-label">{a.label}</span>
           </div>
         ))}
       </div>
 
-      {selected && (
-        <div style={{
-          background: "var(--rose-pale)",
-          borderRadius: "12px",
-          padding: "0.7rem 1rem",
-          marginBottom: "1.2rem",
-          fontSize: "0.88rem",
-          color: "var(--rose)",
-          fontWeight: 500,
-          textAlign: "center",
-          animation: "fadeUp 0.3s ease"
-        }}>
-          {ACTIVITIES.find(a => a.id === selected)?.emoji} {ACTIVITIES.find(a => a.id === selected)?.label} geselecteerd!
-        </div>
-      )}
-
-      <div style={{ textAlign: "center" }}>
-        <button
-          className="btn-primary"
-          onClick={() => selected && onNext(selected)}
-          style={{ opacity: selected ? 1 : 0.4, cursor: selected ? "pointer" : "not-allowed" }}
-        >
-          Volgende stap ✨
-        </button>
-      </div>
+      <button
+        className="btn-primary"
+        style={{ width: "100%" }}
+        onClick={() => selected && onNext(selected)}
+        disabled={!selected}
+      >
+        Volgende →
+      </button>
     </div>
   );
 }
 
-function DateTimeStep({ onNext }: { onNext: (date: string, time: string) => void }) {
+function DateTimeStep({ onNext }: { onNext: (d: string, t: string) => void }) {
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const today = new Date().toISOString().split("T")[0];
 
   return (
     <div className="step-card">
-      <ProgressDots step={1} />
-      <div style={{ textAlign: "center", marginBottom: "2rem" }}>
-        <div style={{ fontSize: "2.2rem", marginBottom: "0.4rem" }}>📅</div>
-        <h2 className="font-display" style={{ fontSize: "1.7rem", marginBottom: "0.3rem" }}>Wanneer is onze date?</h2>
-        <p style={{ color: "var(--warm-gray)", fontSize: "0.9rem" }}>Kies een datum & tijd die jou uitkomt 🌙</p>
-      </div>
+      <ProgressBar step={1} />
+      <h2 className="font-display" style={{ fontSize: "1.6rem", marginBottom: "0.25rem" }}>Wanneer?</h2>
+      <p style={{ color: "var(--mid)", fontSize: "0.88rem", marginBottom: "1.75rem" }}>Kies een datum & tijd</p>
 
-      <div style={{ display: "flex", flexDirection: "column", gap: "1.2rem", marginBottom: "2rem" }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem", marginBottom: "2rem" }}>
         <div>
-          <label style={{ display: "block", fontWeight: 500, marginBottom: "0.5rem", fontSize: "0.9rem", color: "var(--warm-gray)" }}>
-            📆 Kies een datum
-          </label>
+          <label className="field-label">Datum</label>
           <input type="date" className="date-input" min={today} value={date} onChange={(e) => setDate(e.target.value)} />
         </div>
         <div>
-          <label style={{ display: "block", fontWeight: 500, marginBottom: "0.5rem", fontSize: "0.9rem", color: "var(--warm-gray)" }}>
-            ⏰ Kies een tijd
-          </label>
+          <label className="field-label">Tijd</label>
           <input type="time" className="time-input" value={time} onChange={(e) => setTime(e.target.value)} />
         </div>
       </div>
 
-      <div style={{ textAlign: "center" }}>
-        <button
-          className="btn-primary"
-          onClick={() => date && time && onNext(date, time)}
-          style={{ opacity: date && time ? 1 : 0.4, cursor: date && time ? "pointer" : "not-allowed" }}
-        >
-          Bijna klaar 💕
-        </button>
-      </div>
+      <button
+        className="btn-primary"
+        style={{ width: "100%" }}
+        onClick={() => date && time && onNext(date, time)}
+        disabled={!date || !time}
+      >
+        Bevestig →
+      </button>
     </div>
   );
 }
 
 function ConfirmModal({ activity, date, time, onConfirm, onBack, loading }: {
-  activity: string; date: string; time: string; onConfirm: () => void; onBack: () => void; loading: boolean;
+  activity: string; date: string; time: string;
+  onConfirm: () => void; onBack: () => void; loading: boolean;
 }) {
   const act = ACTIVITIES.find((a) => a.id === activity)!;
-  const dateStr = new Date(date + "T12:00:00").toLocaleDateString("nl-NL", { weekday: "long", month: "long", day: "numeric", year: "numeric" });
-  const timeStr = new Date(`2000-01-01T${time}`).toLocaleTimeString("nl-NL", { hour: "2-digit", minute: "2-digit" });
+  const dateStr = new Date(date + "T12:00:00").toLocaleDateString("nl-NL", {
+    weekday: "long", day: "numeric", month: "long"
+  });
+  const timeStr = new Date(`2000-01-01T${time}`).toLocaleTimeString("nl-NL", {
+    hour: "2-digit", minute: "2-digit"
+  });
 
   return (
     <div className="modal-overlay">
       <div className="modal-card">
-        <div style={{ fontSize: "3.5rem", marginBottom: "1rem" }}>🎉</div>
-        <h2 className="font-display" style={{ fontSize: "1.9rem", marginBottom: "0.5rem", color: "var(--charcoal)" }}>
-          Ons dateplan!
-        </h2>
-        <p style={{ color: "var(--warm-gray)", marginBottom: "1.5rem", fontSize: "0.92rem" }}>
-          Even checken — klopt dit?
+        <p style={{ fontSize: "0.75rem", fontWeight: 500, color: "var(--mid)", letterSpacing: "0.06em", textTransform: "uppercase", marginBottom: "0.75rem" }}>
+          Bevestig je date
         </p>
+        <h2 className="font-display" style={{ fontSize: "1.7rem", marginBottom: "1.5rem" }}>
+          Ziet dit er goed uit?
+        </h2>
 
-        <div style={{ background: "var(--rose-pale)", borderRadius: "18px", padding: "1.5rem", marginBottom: "2rem", textAlign: "left" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "1rem", paddingBottom: "1rem", borderBottom: "1px solid var(--rose-light)" }}>
-            <span style={{ fontSize: "2.2rem" }}>{act.emoji}</span>
-            <div style={{ fontWeight: 600, fontSize: "1.1rem" }}>{act.label}</div>
-          </div>
-          <div style={{ display: "flex", gap: "1.5rem" }}>
+        <div style={{ marginBottom: "1.5rem" }}>
+          <div className="summary-row">
+            <span style={{ fontSize: "1.4rem", width: "32px", textAlign: "center" }}>{act.emoji}</span>
             <div>
-              <div style={{ fontSize: "0.75rem", color: "var(--warm-gray)", marginBottom: "0.25rem", textTransform: "uppercase", letterSpacing: "0.05em" }}>Datum</div>
-              <div style={{ fontWeight: 500, fontSize: "0.92rem" }}>📅 {dateStr}</div>
+              <div style={{ fontSize: "0.75rem", color: "var(--mid)", textTransform: "uppercase", letterSpacing: "0.04em" }}>Activiteit</div>
+              <div style={{ fontWeight: 500 }}>{act.label}</div>
             </div>
+          </div>
+          <div className="summary-row">
+            <span style={{ fontSize: "1.2rem", width: "32px", textAlign: "center" }}>📅</span>
             <div>
-              <div style={{ fontSize: "0.75rem", color: "var(--warm-gray)", marginBottom: "0.25rem", textTransform: "uppercase", letterSpacing: "0.05em" }}>Tijd</div>
-              <div style={{ fontWeight: 500, fontSize: "0.92rem" }}>⏰ {timeStr}</div>
+              <div style={{ fontSize: "0.75rem", color: "var(--mid)", textTransform: "uppercase", letterSpacing: "0.04em" }}>Datum</div>
+              <div style={{ fontWeight: 500, textTransform: "capitalize" }}>{dateStr}</div>
+            </div>
+          </div>
+          <div className="summary-row">
+            <span style={{ fontSize: "1.2rem", width: "32px", textAlign: "center" }}>⏰</span>
+            <div>
+              <div style={{ fontSize: "0.75rem", color: "var(--mid)", textTransform: "uppercase", letterSpacing: "0.04em" }}>Tijd</div>
+              <div style={{ fontWeight: 500 }}>{timeStr}</div>
             </div>
           </div>
         </div>
 
-        <div style={{ display: "flex", gap: "0.75rem", justifyContent: "center" }}>
-          <button onClick={onBack} style={{ background: "none", border: "2px solid #f3f4f6", borderRadius: "50px", padding: "0.75rem 1.5rem", cursor: "pointer", color: "var(--warm-gray)", fontFamily: "inherit", fontSize: "0.95rem" }}>
+        <div style={{ display: "flex", gap: "0.75rem" }}>
+          <button onClick={onBack} style={{
+            flex: 1, background: "none", border: "1px solid var(--border)",
+            borderRadius: "10px", padding: "0.85rem", cursor: "pointer",
+            fontFamily: "inherit", color: "var(--mid)", fontSize: "0.9rem"
+          }}>
             ← Terug
           </button>
-          <button className="btn-primary" onClick={onConfirm} disabled={loading}>
-            {loading ? "Opslaan... 💾" : "Het is een date! 💖"}
+          <button className="btn-primary" style={{ flex: 2 }} onClick={onConfirm} disabled={loading}>
+            {loading ? "Opslaan..." : "Het is een date! 💖"}
           </button>
         </div>
       </div>
@@ -282,24 +272,41 @@ function ConfirmModal({ activity, date, time, onConfirm, onBack, loading }: {
 function SuccessStep() {
   return (
     <div className="step-card" style={{ textAlign: "center" }}>
-      <div style={{ fontSize: "5rem", marginBottom: "1rem" }}>🥰</div>
-      <h2 className="font-display" style={{ fontSize: "2.2rem", marginBottom: "0.75rem", color: "var(--rose)" }}>
-        Het is een date!
+      <div style={{
+        width: "100%", height: "180px",
+        borderRadius: "14px", overflow: "hidden",
+        marginBottom: "2rem", position: "relative",
+      }}>
+        <img
+          src="https://images.unsplash.com/photo-1529543544282-ea669407fca3?w=600&q=80&fit=crop"
+          alt=""
+          style={{ width: "100%", height: "100%", objectFit: "cover" }}
+        />
+        <div style={{
+          position: "absolute", inset: 0,
+          background: "linear-gradient(to top, rgba(0,0,0,0.4) 0%, transparent 60%)",
+        }} />
+      </div>
+
+      <h2 className="font-display" style={{ fontSize: "2rem", marginBottom: "0.6rem" }}>
+        Het is een date 🎉
       </h2>
-      <p style={{ color: "var(--warm-gray)", fontSize: "1.05rem", lineHeight: 1.7, marginBottom: "2rem" }}>
-        Ik kan niet wachten! Ik zorg ervoor dat alles
-        <br />
-        <strong className="font-display" style={{ color: "var(--charcoal)", fontSize: "1.15rem" }}>absoluut perfect wordt voor jou 💕</strong>
+      <p style={{ color: "var(--mid)", fontSize: "0.95rem", lineHeight: 1.7, marginBottom: "1.5rem" }}>
+        Ik zorg dat het een goede avond wordt.
       </p>
-      <div style={{ background: "var(--rose-pale)", borderRadius: "16px", padding: "1.2rem", fontSize: "0.95rem", color: "var(--warm-gray)" }}>
-        ✅ Onze date is opgeslagen! Ik tel de dagen af... 🗓️
+      <div style={{
+        background: "#f9fafb", borderRadius: "12px",
+        padding: "1rem 1.25rem", fontSize: "0.88rem", color: "var(--mid)",
+        border: "1px solid var(--border)"
+      }}>
+        ✓ Opgeslagen — ik tel de dagen af
       </div>
     </div>
   );
 }
 
 export default function Home() {
-  const [step, setStep] = useState<"ask" | "activity" | "datetime" | "confirm" | "success">("ask");
+  const [step, setStep] = useState<"ask" | "activity" | "datetime" | "success">("ask");
   const [activity, setActivity] = useState("");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
@@ -315,9 +322,7 @@ export default function Home() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ activity, date, time }),
       });
-    } catch (e) {
-      console.error(e);
-    }
+    } catch (e) { console.error(e); }
     setLoading(false);
     setShowModal(false);
     setShowPetals(true);
@@ -326,13 +331,13 @@ export default function Home() {
 
   return (
     <main style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", padding: "2rem 1rem" }}>
-      <FloatingDecorations />
       <Petals active={showPetals} />
 
       {step === "ask" && <AskStep onYes={() => setStep("activity")} />}
       {step === "activity" && <ActivityStep onNext={(a) => { setActivity(a); setStep("datetime"); }} />}
       {step === "datetime" && <DateTimeStep onNext={(d, t) => { setDate(d); setTime(t); setShowModal(true); }} />}
-      {step === "datetime" && showModal && (
+
+      {showModal && (
         <ConfirmModal
           activity={activity} date={date} time={time}
           onConfirm={handleConfirm}
