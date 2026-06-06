@@ -414,13 +414,6 @@ function SuccessStep({ activity, date, time }: { activity: string; date: string;
         </div>
       </div>
 
-      <div style={{
-        fontSize: "0.82rem", color: "var(--muted)", lineHeight: 1.5,
-        background: "#f9fafb", borderRadius: "12px", padding: "0.75rem 1rem",
-        border: "1px solid var(--border)",
-      }}>
-        ✅ Opgeslagen — ik tel de dagen af 🗓️
-      </div>
     </div>
   );
 }
