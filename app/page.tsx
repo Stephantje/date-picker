@@ -379,38 +379,6 @@ function SuccessStep({ activity, date, time }: { activity: string; date: string;
     hour: "2-digit", minute: "2-digit",
   });
 
-  // Build .ics calendar file content
-  function addToCalendar() {
-    const [h, m]   = time.split(":").map(Number);
-    const startDt  = new Date(date + "T" + time);
-    const endDt    = new Date(startDt.getTime() + 2 * 60 * 60 * 1000); // +2 hours
-
-    function fmt(d: Date) {
-      return d.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
-    }
-
-    const ics = [
-      "BEGIN:VCALENDAR",
-      "VERSION:2.0",
-      "PRODID:-//DatePicker//NL",
-      "BEGIN:VEVENT",
-      `DTSTART:${fmt(startDt)}`,
-      `DTEND:${fmt(endDt)}`,
-      `SUMMARY:📅 Date — ${act.label}`,
-      `DESCRIPTION:Onze date: ${act.label}\\nDatum: ${dateStr}\\nTijd: ${timeStr}`,
-      "END:VEVENT",
-      "END:VCALENDAR",
-    ].join("\r\n");
-
-    const blob = new Blob([ics], { type: "text/calendar;charset=utf-8" });
-    const url  = URL.createObjectURL(blob);
-    const a    = document.createElement("a");
-    a.href     = url;
-    a.download = "onze-date.ics";
-    a.click();
-    URL.revokeObjectURL(url);
-  }
-
   return (
     <div className="step-card" style={{ textAlign: "center", position: "relative", zIndex: 1 }}>
       <div style={{ fontSize: "4.5rem", marginBottom: "1.25rem" }}>🥰</div>
@@ -446,17 +414,12 @@ function SuccessStep({ activity, date, time }: { activity: string; date: string;
         </div>
       </div>
 
-      {/* calendar button */}
-      <button className="btn-yes" style={{ width: "100%", borderRadius: "14px", marginBottom: "0.75rem" }} onClick={addToCalendar}>
-        📲 Zet in mijn agenda
-      </button>
-
       <div style={{
         fontSize: "0.82rem", color: "var(--muted)", lineHeight: 1.5,
         background: "#f9fafb", borderRadius: "12px", padding: "0.75rem 1rem",
         border: "1px solid var(--border)",
       }}>
-        ✅ Opgeslagen in Supabase — tik hierboven om toe te voegen aan je agenda
+        ✅ Opgeslagen — ik tel de dagen af 🗓️
       </div>
     </div>
   );
