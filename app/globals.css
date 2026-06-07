@@ -114,10 +114,10 @@ body {
 .activity-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 9px;
-  max-height: 370px;
+  gap: 10px;
+  max-height: 390px;
   overflow-y: auto;
-  padding-right: 2px;
+  padding: 2px 2px 2px 0;
   margin-bottom: 1.5rem;
   scrollbar-width: thin;
   scrollbar-color: var(--pink-light) transparent;
@@ -130,12 +130,13 @@ body {
   overflow: hidden;
   cursor: pointer;
   transition: transform .18s, border-color .18s, box-shadow .18s;
-  background: #fce4ec;   /* placeholder colour while "image" loads */
+  background: #fce4ec;
   text-align: center;
   user-select: none;
-  /* square aspect ratio — photo fills it */
   aspect-ratio: 1 / 1;
   position: relative;
+  /* ensure a minimum tap size */
+  min-height: 80px;
 }
 
 .act-card:hover {
