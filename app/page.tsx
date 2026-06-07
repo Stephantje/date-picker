@@ -1,5 +1,5 @@
 "use client";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 
 const ACTIVITIES = [
   { id: "dinner",   emoji: "🍝", label: "Uit eten" },
@@ -97,7 +97,6 @@ function AskStep({ onYes }: { onYes: () => void }) {
 
   return (
     <div className="step-card" style={{ textAlign: "center", position: "relative", zIndex: 1 }}>
-      {/* animated gradient banner */}
       <div className="hero-banner">
         <span>💝</span>
       </div>
@@ -117,8 +116,6 @@ function AskStep({ onYes }: { onYes: () => void }) {
           Nee... 😢
         </button>
       </div>
-
-
     </div>
   );
 }
@@ -154,8 +151,149 @@ function ActivityStep({ onNext }: { onNext: (a: string) => void }) {
 }
 
 /* ─────────────────────────────────────────
-   CUSTOM TIME PICKER — scroll drum
+   CUSTOM TIME PICKER — smooth scroll drum
 ───────────────────────────────────────── */
+const ITEM_H  = 44;
+const VISIBLE = 5;
+
+function Drum({
+  items,
+  selected,
+  onSelect,
+}: {
+  items: string[];
+  selected: string;
+  onSelect: (v: string) => void;
+}) {
+  const ref       = useRef<HTMLDivElement>(null);
+  const settling  = useRef(false);   // true while programmatic scroll is running
+  const snapTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const selIdx = items.indexOf(selected);
+
+  /* ── scroll to index smoothly ── */
+  const scrollToIdx = useCallback(
+    (idx: number, behavior: ScrollBehavior = "smooth") => {
+      const el = ref.current;
+      if (!el) return;
+      settling.current = true;
+      el.scrollTo({ top: idx * ITEM_H, behavior });
+      // Clear settling flag after animation finishes (~350 ms is enough for smooth)
+      setTimeout(() => { settling.current = false; }, 380);
+    },
+    []
+  );
+
+  /* ── initial position (instant, no animation) ── */
+  useEffect(() => {
+    scrollToIdx(selIdx, "instant");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  /* ── when selected changes from outside, follow smoothly ── */
+  const prevSel = useRef(selected);
+  useEffect(() => {
+    if (prevSel.current !== selected) {
+      prevSel.current = selected;
+      scrollToIdx(selIdx, "smooth");
+    }
+  }, [selected, selIdx, scrollToIdx]);
+
+  /* ── debounced snap-to-nearest on scroll end ── */
+  function onScroll() {
+    if (settling.current) return;
+
+    if (snapTimer.current) clearTimeout(snapTimer.current);
+
+    snapTimer.current = setTimeout(() => {
+      const el = ref.current;
+      if (!el) return;
+      const rawIdx  = el.scrollTop / ITEM_H;
+      const nearest = Math.max(0, Math.min(items.length - 1, Math.round(rawIdx)));
+
+      // Snap smoothly to grid
+      scrollToIdx(nearest, "smooth");
+
+      // Only fire callback when value actually changes
+      if (items[nearest] !== selected) {
+        onSelect(items[nearest]);
+      }
+    }, 120); // wait 120 ms after last scroll event before snapping
+  }
+
+  return (
+    <div style={{ position: "relative", flex: 1 }}>
+      {/* top fade */}
+      <div style={{
+        position: "absolute", top: 0, left: 0, right: 0,
+        height: ITEM_H * 2,
+        background: "linear-gradient(to bottom, white 0%, transparent 100%)",
+        pointerEvents: "none", zIndex: 2, borderRadius: "12px 12px 0 0",
+      }} />
+      {/* bottom fade */}
+      <div style={{
+        position: "absolute", bottom: 0, left: 0, right: 0,
+        height: ITEM_H * 2,
+        background: "linear-gradient(to top, white 0%, transparent 100%)",
+        pointerEvents: "none", zIndex: 2, borderRadius: "0 0 12px 12px",
+      }} />
+      {/* selection highlight */}
+      <div style={{
+        position: "absolute", top: "50%", left: 8, right: 8,
+        height: ITEM_H, transform: "translateY(-50%)",
+        background: "var(--pink-pale)", borderRadius: "10px",
+        border: "1.5px solid var(--border)", zIndex: 1, pointerEvents: "none",
+      }} />
+
+      {/* scroll container — native momentum + no visible scrollbar */}
+      <div
+        ref={ref}
+        onScroll={onScroll}
+        style={{
+          height: ITEM_H * VISIBLE,
+          overflowY: "scroll",
+          /* smooth momentum on iOS / trackpads */
+          WebkitOverflowScrolling: "touch",
+          /* hide scrollbar cross-browser */
+          scrollbarWidth: "none",
+          msOverflowStyle: "none",
+          position: "relative", zIndex: 3,
+          /* NO scroll-snap on the container — we handle snapping manually
+             so it doesn't fight with momentum scrolling */
+        } as React.CSSProperties}
+      >
+        <div style={{ height: ITEM_H * 2 }} />
+        {items.map((item) => {
+          const isSelected = item === selected;
+          return (
+            <div
+              key={item}
+              onClick={() => {
+                onSelect(item);
+                scrollToIdx(items.indexOf(item), "smooth");
+              }}
+              style={{
+                height: ITEM_H,
+                display: "flex", alignItems: "center", justifyContent: "center",
+                fontSize: isSelected ? "1.5rem" : "1.1rem",
+                fontWeight: isSelected ? 700 : 400,
+                color: isSelected ? "var(--pink)" : "var(--muted)",
+                cursor: "pointer",
+                transition: "font-size .18s ease, color .18s ease, font-weight .18s ease",
+                userSelect: "none",
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
+              }}
+            >
+              {item}
+            </div>
+          );
+        })}
+        <div style={{ height: ITEM_H * 2 }} />
+      </div>
+    </div>
+  );
+}
+
 function TimePicker({ value, onChange }: { value: string; onChange: (v: string) => void }) {
   const hours   = Array.from({ length: 24 }, (_, i) => String(i).padStart(2, "0"));
   const minutes = ["00", "15", "30", "45"];
@@ -163,82 +301,8 @@ function TimePicker({ value, onChange }: { value: string; onChange: (v: string) 
   const [selH, setSelH] = useState(value ? value.split(":")[0] : "19");
   const [selM, setSelM] = useState(value ? value.split(":")[1] : "00");
 
-  function pick(h: string, m: string) {
-    setSelH(h); setSelM(m);
-    onChange(`${h}:${m}`);
-  }
-
-  const ITEM_H = 44;
-  const VISIBLE = 5;
-
-  function Drum({ items, selected, onSelect }: { items: string[]; selected: string; onSelect: (v: string) => void }) {
-    const ref = useRef<HTMLDivElement>(null);
-    const selIdx = items.indexOf(selected);
-
-    useEffect(() => {
-      const el = ref.current; if (!el) return;
-      el.scrollTop = selIdx * ITEM_H;
-    }, [selIdx]);
-
-    function onScroll() {
-      const el = ref.current; if (!el) return;
-      const idx = Math.round(el.scrollTop / ITEM_H);
-      const clamped = Math.max(0, Math.min(items.length - 1, idx));
-      if (items[clamped] !== selected) onSelect(items[clamped]);
-    }
-
-    return (
-      <div style={{ position: "relative", flex: 1 }}>
-        {/* top fade */}
-        <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: ITEM_H * 2, background: "linear-gradient(to bottom, white 0%, transparent 100%)", pointerEvents: "none", zIndex: 2, borderRadius: "12px 12px 0 0" }} />
-        {/* bottom fade */}
-        <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: ITEM_H * 2, background: "linear-gradient(to top, white 0%, transparent 100%)", pointerEvents: "none", zIndex: 2, borderRadius: "0 0 12px 12px" }} />
-        {/* selection highlight */}
-        <div style={{
-          position: "absolute", top: "50%", left: 8, right: 8,
-          height: ITEM_H, transform: "translateY(-50%)",
-          background: "var(--pink-pale)", borderRadius: "10px",
-          border: "1.5px solid var(--border)", zIndex: 1, pointerEvents: "none",
-        }} />
-        {/* scroll container */}
-        <div
-          ref={ref}
-          onScroll={onScroll}
-          style={{
-            height: ITEM_H * VISIBLE,
-            overflowY: "scroll",
-            scrollSnapType: "y mandatory",
-            scrollbarWidth: "none",
-            position: "relative", zIndex: 3,
-          }}
-        >
-          {/* padding top/bottom so first/last item can center */}
-          <div style={{ height: ITEM_H * 2 }} />
-          {items.map((item) => (
-            <div
-              key={item}
-              onClick={() => onSelect(item)}
-              style={{
-                height: ITEM_H,
-                display: "flex", alignItems: "center", justifyContent: "center",
-                scrollSnapAlign: "center",
-                fontSize: item === selected ? "1.5rem" : "1.1rem",
-                fontWeight: item === selected ? 700 : 400,
-                color: item === selected ? "var(--pink)" : "var(--muted)",
-                cursor: "pointer",
-                transition: "font-size .15s, color .15s, font-weight .15s",
-                userSelect: "none",
-                fontFamily: "'Plus Jakarta Sans', sans-serif",
-              }}
-            >
-              {item}
-            </div>
-          ))}
-          <div style={{ height: ITEM_H * 2 }} />
-        </div>
-      </div>
-    );
-  }
+  function pickH(h: string) { setSelH(h); onChange(`${h}:${selM}`); }
+  function pickM(m: string) { setSelM(m); onChange(`${selH}:${m}`); }
 
   return (
     <div style={{
@@ -246,9 +310,15 @@ function TimePicker({ value, onChange }: { value: string; onChange: (v: string) 
       overflow: "hidden", background: "white",
       display: "flex", alignItems: "stretch",
     }}>
-      <Drum items={hours}   selected={selH} onSelect={(h) => pick(h, selM)} />
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.6rem", fontWeight: 700, color: "var(--muted)", width: "24px", flexShrink: 0 }}>:</div>
-      <Drum items={minutes} selected={selM} onSelect={(m) => pick(selH, m)} />
+      <Drum items={hours}   selected={selH} onSelect={pickH} />
+      <div style={{
+        display: "flex", alignItems: "center", justifyContent: "center",
+        fontSize: "1.6rem", fontWeight: 700, color: "var(--muted)",
+        width: "24px", flexShrink: 0,
+      }}>
+        :
+      </div>
+      <Drum items={minutes} selected={selM} onSelect={pickM} />
     </div>
   );
 }
@@ -379,7 +449,6 @@ function SuccessStep({ activity, date, time }: { activity: string; date: string;
         Ik zorg ervoor dat alles perfect wordt 💕
       </p>
 
-      {/* summary */}
       <div style={{ background: "#fff8f9", borderRadius: "16px", padding: "0.2rem 1rem", marginBottom: "1.25rem", border: "1.5px solid var(--border)", textAlign: "left" }}>
         <div className="sum-row">
           <span className="sum-ico">{act.emoji}</span>
@@ -403,7 +472,6 @@ function SuccessStep({ activity, date, time }: { activity: string; date: string;
           </div>
         </div>
       </div>
-
     </div>
   );
 }
