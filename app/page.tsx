@@ -301,7 +301,7 @@ function Drum({ items, selected, onSelect }: {
       <div style={{ position: "absolute", top: "50%", left: 8, right: 8, height: ITEM_H, transform: "translateY(-50%)", background: "var(--pink-pale)", borderRadius: "10px", border: "1.5px solid var(--border)", zIndex: 1, pointerEvents: "none" }} />
       <div
         ref={ref} onScroll={onScroll}
-        style={{ height: ITEM_H * VISIBLE, overflowY: "scroll", WebkitOverflowScrolling: "touch", scrollbarWidth: "none", msOverflowStyle: "none", position: "relative", zIndex: 3 }} as React.CSSProperties}
+        style={{ height: ITEM_H * VISIBLE, overflowY: "scroll", WebkitOverflowScrolling: "touch", scrollbarWidth: "none", msOverflowStyle: "none", position: "relative", zIndex: 3 } as React.CSSProperties}
       >
         <div style={{ height: ITEM_H * 2 }} />
         {items.map((item) => {
