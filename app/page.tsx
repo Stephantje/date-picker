@@ -124,9 +124,9 @@ function AskStep({ onYes }: { onYes: () => void }) {
       <div style={{
         position: "relative", zIndex: 2,
         display: "flex", flexDirection: "column",
-        alignItems: "center", justifyContent: "center",
+        alignItems: "center", justifyContent: "flex-start",
         textAlign: "center",
-        padding: "3.5rem 2rem 3rem",
+        padding: "2.25rem 2rem 3rem",
         minHeight: "420px",
         gap: "0.5rem",
       }}>
@@ -217,9 +217,8 @@ function ActivityCard({
       )}
       <div style={{
         position: "absolute", bottom: 0, left: 0, right: 0,
-        padding: "6px 4px 7px", textAlign: "center",
+        padding: "8px 4px 8px", textAlign: "center",
       }}>
-        <div style={{ fontSize: "1.1rem", lineHeight: 1, marginBottom: "2px" }}>{activity.emoji}</div>
         <div style={{
           fontSize: "0.72rem", fontWeight: 700, color: "#fff",
           textShadow: "0 1px 3px rgba(0,0,0,0.65)", lineHeight: 1.2,
@@ -237,9 +236,6 @@ function ActivityStep({ onNext }: { onNext: (a: string) => void }) {
   return (
     <div className="step-card" style={{ position: "relative", zIndex: 1 }}>
       <ProgBar step={0} />
-      <div style={{ marginBottom: "1.25rem" }}>
-        <h2 className="font-display" style={{ fontSize: "1.65rem" }}>Wat gaan we doen? 🗺️</h2>
-      </div>
       <div className="activity-grid">
         {ACTIVITIES.map((a) => (
           <ActivityCard key={a.id} activity={a} selected={sel === a.id} onClick={() => setSel(a.id)} />
@@ -377,18 +373,7 @@ function DateTimeStep({ activity, onNext }: { activity: string; onNext: (d: stri
           ))}
         </div>
 
-        <div style={{ marginBottom: "1.5rem" }}>
-          <h2 className="font-display" style={{
-            fontSize: "1.65rem", color: "#fff",
-            textShadow: "0 2px 8px rgba(0,0,0,0.4)",
-          }}>Wanneer? 📅</h2>
-          <p style={{
-            fontSize: "0.88rem", marginTop: "0.3rem",
-            color: "rgba(255,255,255,0.75)",
-          }}>Kies een datum & tijd die jou uitkomt</p>
-        </div>
-
-        <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem", marginBottom: "2rem" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem", marginBottom: "2rem", marginTop: "0.5rem" }}>
           <div className="field-wrap">
             <label className="field-label" style={{ color: "rgba(255,255,255,0.7)" }}>Datum</label>
             <input type="date" className="field-input" min={today} value={date} onChange={(e) => setDate(e.target.value)} />
@@ -431,7 +416,6 @@ function ConfirmModal({ activity, date, time, onConfirm, onBack, loading }: {
         {/* Summary panel */}
         <div style={{ padding: "1.25rem 1.25rem 1.5rem" }}>
           <div style={{ background: "#fff8f9", borderRadius: "16px", padding: "0.25rem 1rem", marginBottom: "1.5rem", border: "1.5px solid var(--border)" }}>
-            <div className="sum-row"><span className="sum-ico">{act.emoji}</span><div><div className="sum-label">Activiteit</div><div className="sum-val">{act.label}</div></div></div>
             <div className="sum-row"><span className="sum-ico">📅</span><div><div className="sum-label">Datum</div><div className="sum-val" style={{ textTransform: "capitalize" }}>{dateStr}</div></div></div>
             <div className="sum-row"><span className="sum-ico">⏰</span><div><div className="sum-label">Tijd</div><div className="sum-val">{timeStr}</div></div></div>
           </div>
@@ -473,7 +457,6 @@ function SuccessStep({ activity, date, time }: { activity: string; date: string;
       <div style={{ padding: "1.5rem" }}>
         <p style={{ color: "var(--muted)", fontSize: "0.95rem", lineHeight: 1.6, marginBottom: "1.5rem" }}>Ik zorg ervoor dat alles perfect wordt 💕</p>
         <div style={{ background: "#fff8f9", borderRadius: "16px", padding: "0.2rem 1rem", border: "1.5px solid var(--border)", textAlign: "left" }}>
-          <div className="sum-row"><span className="sum-ico">{act.emoji}</span><div><div className="sum-label">Activiteit</div><div className="sum-val">{act.label}</div></div></div>
           <div className="sum-row"><span className="sum-ico">📅</span><div><div className="sum-label">Datum</div><div className="sum-val" style={{ textTransform: "capitalize" }}>{dateStr}</div></div></div>
           <div className="sum-row"><span className="sum-ico">⏰</span><div><div className="sum-label">Tijd</div><div className="sum-val">{timeStr}</div></div></div>
         </div>
