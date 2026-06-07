@@ -84,8 +84,6 @@ function ProgBar({ step }: { step: number }) {
    STEP 0 — Ask  (full-bleed photo, no white panel)
 ───────────────────────────────────────── */
 function AskStep({ onYes }: { onYes: () => void }) {
-  const [noClicked, setNoClicked] = useState(false);
-
   return (
     <div className="step-card" style={{
       position: "relative", zIndex: 1,
@@ -102,13 +100,13 @@ function AskStep({ onYes }: { onYes: () => void }) {
           zIndex: 0,
         }}
       />
-      {/* gradient — heavier at bottom so buttons are legible */}
+      {/* gradient — heavier at bottom so button is legible */}
       <div style={{
         position: "absolute", inset: 0, zIndex: 1,
         background: "linear-gradient(to bottom, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.7) 100%)",
       }} />
 
-      {/* Content: text top, buttons pinned to bottom */}
+      {/* Content: text top, button pinned to bottom */}
       <div style={{
         position: "relative", zIndex: 2,
         display: "flex", flexDirection: "column",
@@ -136,50 +134,25 @@ function AskStep({ onYes }: { onYes: () => void }) {
           </p>
         </div>
 
-        {/* "Nee" toast message */}
-        {noClicked && (
-          <div style={{
-            background: "rgba(255,255,255,0.15)",
-            backdropFilter: "blur(10px)",
-            border: "1px solid rgba(255,255,255,0.3)",
-            borderRadius: "14px",
-            padding: "0.75rem 1.25rem",
+        {/* Single button — full width at bottom */}
+        <button
+          onClick={onYes}
+          style={{
+            width: "100%",
+            background: "linear-gradient(135deg, #f43f5e 0%, #fb7185 100%)",
             color: "#fff",
-            fontSize: "0.95rem",
-            fontWeight: 500,
-            marginBottom: "1rem",
-            textShadow: "0 1px 4px rgba(0,0,0,0.3)",
-          }}>
-            Heb je mooi pech, we gaan toch 😊
-          </div>
-        )}
-
-        {/* Buttons — bottom, side by side */}
-        <div style={{ display: "flex", gap: "0.75rem", width: "100%" }}>
-          <button className="btn-yes" style={{ flex: 1 }} onClick={onYes}>
-            Ja, natuurlijk! 🥰
-          </button>
-          {!noClicked && (
-            <button
-              onClick={() => setNoClicked(true)}
-              style={{
-                flex: 1,
-                background: "rgba(255,255,255,0.15)",
-                backdropFilter: "blur(8px)",
-                color: "#fff",
-                border: "1.5px solid rgba(255,255,255,0.4)",
-                borderRadius: "50px",
-                padding: "0.9rem 1rem",
-                fontFamily: "'Plus Jakarta Sans', sans-serif",
-                fontSize: "1rem",
-                cursor: "pointer",
-                fontWeight: 500,
-              }}
-            >
-              Nee... 😢
-            </button>
-          )}
-        </div>
+            border: "none",
+            borderRadius: "50px",
+            padding: "1rem 0",
+            fontFamily: "'Plus Jakarta Sans', sans-serif",
+            fontSize: "1.05rem",
+            fontWeight: 600,
+            cursor: "pointer",
+            boxShadow: "0 4px 20px rgba(244,63,94,.45)",
+          }}
+        >
+          Ja! 🥰
+        </button>
       </div>
     </div>
   );
@@ -463,8 +436,6 @@ function SuccessStep({ activity, date, time }: { activity: string; date: string;
         {photo && <img src={photo} alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />}
         <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, rgba(0,0,0,0.05), rgba(0,0,0,0.55))" }} />
         <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", gap: 6 }}>
-          <div style={{ fontSize: "3rem" }}>🥰</div>
-          <div style={{ fontSize: "1.5rem", fontWeight: 800, color: "#fff", textShadow: "0 2px 8px rgba(0,0,0,0.4)" }}>Het is een date!</div>
         </div>
       </div>
       <div style={{ padding: "1.5rem" }}>
