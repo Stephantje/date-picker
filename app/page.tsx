@@ -5,6 +5,7 @@ const ACTIVITIES = [
   { id: "dinner",   emoji: "🍝", label: "Uit eten" },
   { id: "drinks",   emoji: "🍹", label: "Drankjes" },
   { id: "walk",     emoji: "🌸", label: "Wandelen" },
+  { id: "arcade",   emoji: "🕹️", label: "Arcade" },
   { id: "movie",    emoji: "🎬", label: "Filmavond" },
   { id: "bowling",  emoji: "🎳", label: "Bowlen" },
   { id: "museum",   emoji: "🖼️", label: "Museum" },
@@ -14,9 +15,7 @@ const ACTIVITIES = [
   { id: "park",     emoji: "🎢", label: "Pretpark" },
   { id: "escape",   emoji: "🧩", label: "Escape room" },
   { id: "golf",     emoji: "⛳", label: "Mini golf" },
-  { id: "arcade",   emoji: "🕹️", label: "Arcade" },
   { id: "shopping", emoji: "🛍️", label: "Shoppen" },
-  { id: "chill",    emoji: "🏠", label: "Thuis chillen" },
 ];
 
 /* ── confetti ── */
