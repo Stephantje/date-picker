@@ -84,24 +84,12 @@ function ProgBar({ step }: { step: number }) {
    STEP 0 — Ask  (full-bleed photo, no white panel)
 ───────────────────────────────────────── */
 function AskStep({ onYes }: { onYes: () => void }) {
-  const noRef = useRef<HTMLButtonElement>(null);
-
-  function flee(e: React.MouseEvent) {
-    const btn = noRef.current; if (!btn) return;
-    const bw = window.innerWidth, bh = window.innerHeight;
-    let nx: number, ny: number;
-    do {
-      nx = Math.random() * (bw - 150);
-      ny = Math.random() * (bh - 60);
-    } while (Math.abs(nx - e.clientX) < 160 || Math.abs(ny - e.clientY) < 100);
-    Object.assign(btn.style, { position: "fixed", left: nx + "px", top: ny + "px", zIndex: "50" });
-  }
+  const [noClicked, setNoClicked] = useState(false);
 
   return (
     <div className="step-card" style={{
       position: "relative", zIndex: 1,
       overflow: "hidden", padding: 0,
-      /* no fixed height — photo is 100% of the card */
     }}>
       {/* Full-bleed photo */}
       <img
@@ -114,58 +102,83 @@ function AskStep({ onYes }: { onYes: () => void }) {
           zIndex: 0,
         }}
       />
-      {/* dark gradient so text is readable */}
+      {/* gradient — heavier at bottom so buttons are legible */}
       <div style={{
         position: "absolute", inset: 0, zIndex: 1,
-        background: "linear-gradient(to bottom, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.62) 100%)",
+        background: "linear-gradient(to bottom, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.7) 100%)",
       }} />
 
-      {/* All content sits ON the photo */}
+      {/* Content: text top, buttons pinned to bottom */}
       <div style={{
         position: "relative", zIndex: 2,
         display: "flex", flexDirection: "column",
-        alignItems: "center", justifyContent: "flex-start",
+        alignItems: "center",
         textAlign: "center",
-        padding: "2.25rem 2rem 3rem",
+        padding: "2.5rem 2rem 2.5rem",
         minHeight: "420px",
-        gap: "0.5rem",
       }}>
-        <h1 className="font-display" style={{
-          fontSize: "2.4rem", lineHeight: 1.2,
-          color: "#fff",
-          textShadow: "0 2px 12px rgba(0,0,0,0.4)",
-          marginBottom: "0.4rem",
-        }}>
-          <em style={{ color: "#fda4af" }}>Esmee</em>...
-        </h1>
-        <p style={{
-          color: "rgba(255,255,255,0.88)", fontSize: "1.05rem",
-          marginBottom: "2rem", lineHeight: 1.6,
-          textShadow: "0 1px 6px rgba(0,0,0,0.35)",
-        }}>
-          Gaan we op date? 🥺
-        </p>
+        {/* Text — top */}
+        <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "flex-start", paddingTop: "1rem" }}>
+          <h1 className="font-display" style={{
+            fontSize: "2.4rem", lineHeight: 1.2,
+            color: "#fff",
+            textShadow: "0 2px 12px rgba(0,0,0,0.4)",
+            marginBottom: "0.5rem",
+          }}>
+            <em style={{ color: "#fda4af" }}>Esmee</em>...
+          </h1>
+          <p style={{
+            color: "rgba(255,255,255,0.88)", fontSize: "1.05rem",
+            lineHeight: 1.6,
+            textShadow: "0 1px 6px rgba(0,0,0,0.35)",
+          }}>
+            Gaan we op date? 🥺
+          </p>
+        </div>
 
-        <div style={{ display: "flex", gap: "0.8rem", justifyContent: "center", flexWrap: "wrap" }}>
-          <button className="btn-yes" onClick={onYes}>Ja, natuurlijk! 🥰</button>
-          <button
-            ref={noRef}
-            onMouseEnter={flee} onClick={flee}
-            style={{
-              background: "rgba(255,255,255,0.18)",
-              backdropFilter: "blur(8px)",
-              color: "#fff",
-              border: "1.5px solid rgba(255,255,255,0.45)",
-              borderRadius: "50px",
-              padding: "0.9rem 2rem",
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
-              fontSize: "1rem",
-              cursor: "pointer",
-              fontWeight: 500,
-            }}
-          >
-            Nee... 😢
+        {/* "Nee" toast message */}
+        {noClicked && (
+          <div style={{
+            background: "rgba(255,255,255,0.15)",
+            backdropFilter: "blur(10px)",
+            border: "1px solid rgba(255,255,255,0.3)",
+            borderRadius: "14px",
+            padding: "0.75rem 1.25rem",
+            color: "#fff",
+            fontSize: "0.95rem",
+            fontWeight: 500,
+            marginBottom: "1rem",
+            textShadow: "0 1px 4px rgba(0,0,0,0.3)",
+          }}>
+            Heb je mooi pech, we gaan toch 😊
+          </div>
+        )}
+
+        {/* Buttons — bottom, side by side */}
+        <div style={{ display: "flex", gap: "0.75rem", width: "100%" }}>
+          <button className="btn-yes" style={{ flex: 1 }} onClick={onYes}>
+            Ja, natuurlijk! 🥰
           </button>
+          {!noClicked && (
+            <button
+              onClick={() => setNoClicked(true)}
+              style={{
+                flex: 1,
+                background: "rgba(255,255,255,0.15)",
+                backdropFilter: "blur(8px)",
+                color: "#fff",
+                border: "1.5px solid rgba(255,255,255,0.4)",
+                borderRadius: "50px",
+                padding: "0.9rem 1rem",
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
+                fontSize: "1rem",
+                cursor: "pointer",
+                fontWeight: 500,
+              }}
+            >
+              Nee... 😢
+            </button>
+          )}
         </div>
       </div>
     </div>
