@@ -104,7 +104,7 @@ function AskStep({ onYes }: { onYes: () => void }) {
         <em style={{ color: "var(--pink)" }}>Esmee</em>...
       </h1>
       <p style={{ color: "var(--muted)", fontSize: "1rem", marginBottom: "2.25rem", lineHeight: 1.6 }}>
-        Wil je op date met mij? 🥺
+        Gaan we op date?
       </p>
 
       <div style={{ display: "flex", gap: "0.8rem", justifyContent: "center", flexWrap: "wrap" }}>
