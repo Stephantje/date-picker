@@ -103,8 +103,7 @@ function AskStep({ onYes }: { onYes: () => void }) {
       </div>
 
       <h1 className="font-display" style={{ fontSize: "2rem", lineHeight: 1.25, marginBottom: "0.65rem" }}>
-        Hey, ik heb een<br />
-        <em style={{ color: "var(--pink)" }}>belangrijke vraag</em>...
+        <em style={{ color: "var(--pink)" }}>Esmee</em>...
       </h1>
       <p style={{ color: "var(--muted)", fontSize: "1rem", marginBottom: "2.25rem", lineHeight: 1.6 }}>
         Wil je op date met mij? 🥺
